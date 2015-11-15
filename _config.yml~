@@ -1,6 +1,6 @@
-title:            Marco Mengoli Blog
+title:            Blog Title
 description:      Describe your website here.
-disqus_shortname: mmblog
+disqus_shortname: neohpstrtheme
 reading_time:     true
 words_per_minute: 200
 logo:             images/logo.png
@@ -28,8 +28,8 @@ menu:
 
 # Owner/author information
 owner:
-  name:           Marco Mengoli
-  site:           http://marcomengoli.github.io/
+  name:           Your name
+  site:           http://aronbordin.com
   avatar:         images/avatar.jpg
   bio:            "Your bio goes here. It shouldn't be super long but a good two sentences or two should suffice."
   email:          you@email.com
@@ -47,11 +47,11 @@ owner:
 
 social:
   - title: "github"
-    url: "https://github.com/MarcoMengoli"
+    url: "https://github.com/aron-bordin"
   - title: "linkedin"
-    url: "https://br.linkedin.com/in/aro"
+    url: "https://br.linkedin.com/in/aronbordin"
   - title: "youtube"
-    url: "https://www.youtube.com/channel/UCfnSe"
+    url: "https://www.youtube.com/channel/UCfnSek-9HPWOx5e2pH7VFgg"
 # Background image to be tiled on all pages
 background:
 
@@ -62,7 +62,7 @@ google_verify:
 bing_verify:
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:    Europe/Rome
+timezone:    America/New_York
 future:      true
 highlighter: pygments
 markdown:    kramdown
