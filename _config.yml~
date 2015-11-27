@@ -1,8 +1,8 @@
-title:            Blog Title
-description:      Describe your website here.
-disqus_shortname: neohpstrtheme
+title:            Marco Mengoli's Blog
+description:      Blog that includes my notes on programming
+disqus_shortname: mmblog
 reading_time:     true
-words_per_minute: 200
+words_per_minute: 100
 logo:             images/logo.png
 # Your site's domain goes here (eg: //mmistakes.github.io, http://mademistakes.com, etc)
 # When testing locally leave blank or use http://localhost:4000
@@ -28,30 +28,30 @@ menu:
 
 # Owner/author information
 owner:
-  name:           Your name
-  site:           http://aronbordin.com
+  name:           Marco Mengoli
+  site:           http://marcomengoli.github.io/
   avatar:         images/avatar.jpg
-  bio:            "Your bio goes here. It shouldn't be super long but a good two sentences or two should suffice."
+  bio:            "Software engineering student."
   email:          you@email.com
   # Social networking links used in footer. Update and remove as you like.
-  twitter: aron_bordin
-  facebook:
-  github: aron-bordin
+  #twitter: Marco Mengoli
+  facebook: Marco Mengoli
+  github: MarcoMengoli
   stackexchange:
   linkedin:
   instagram:
   flickr:
   tumblr:
-  # google plus id, include the '+', eg +AronBordin
-  google_plus:    +yourid
+  # google plus id, include the '+', eg +Marco Mengoli
+  google_plus:    +Marco Mengoli
 
 social:
   - title: "github"
-    url: "https://github.com/aron-bordin"
+    url: "https://github.com/MarcoMengoli"
   - title: "linkedin"
-    url: "https://br.linkedin.com/in/aronbordin"
+    url: "https://br.linkedin.com/in/"
   - title: "youtube"
-    url: "https://www.youtube.com/channel/UCfnSek-9HPWOx5e2pH7VFgg"
+    url: "https://www.youtube.com/channel/"
 # Background image to be tiled on all pages
 background:
 
@@ -62,7 +62,7 @@ google_verify:
 bing_verify:
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:    America/New_York
+timezone:    Europe/Rome
 future:      true
 highlighter: pygments
 markdown:    kramdown
