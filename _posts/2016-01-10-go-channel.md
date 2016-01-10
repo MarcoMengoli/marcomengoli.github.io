@@ -10,10 +10,10 @@ categories: [programming]
 In this article we experiment with the behavior of buffered or unbuffered channels with the Go language.
 
 
-In a very simple and stupid way: the buffer size indicates the number of goroutines that have sent a value on the channel that can go further without blocking. The other goroutines block and wait until they enter into the buffer (because of some channel receive operation) or until their value is directly read from the channel (a channel receive operation only if buffer size is 0, which means unbuffered channel).
+In a very simple and stupid way: the buffer size indicates the number of goroutines which have sent a value on the channel and that can go further without blocking. The other goroutines block and wait until they enter into the buffer (because of some channel receive operation) or until their value is directly read from the channel (caused by a channel receive operation if and only if buffer size is 0, which means unbuffered channel).
 
 
-Here it is the code used in the example, which consist in 4 gorouting which send an int value into the channel and a main which receives and print the 4 values from the channel. The code can of corse be improved using "for" cycles, but I left it in this way to be better understandable the sequence of execution at a glance.
+Here's the code used in the example. It consists in 4 goroutines which send an integer value into the channel and a main routine which receives and prints the 4 values from read the channel. The code can of corse be improved using "for" cycles, but I left it so to improve understanding of the sequence of execution at a glance.
 
 {% highlight go %}
 package main
