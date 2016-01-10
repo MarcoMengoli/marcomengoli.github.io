@@ -3,14 +3,14 @@ layout: post
 title: Go channel
 description: "Explaining with examples the difference between buffered and unbuffered channels in Go language."
 modified: 2016-01-10
-tags: [Go channel message-passing]
+tags: [Go, message-passing]
 categories: [programming]
 ---
 
 In this article we experiment with the behavior of buffered or unbuffered channels with the Go language.
 Here is the code used in the example, which consist in 4 gorouting which send an int value into the channel and a main which receives and print the 4 values from the channel.
 
-~~~ python
+{% highlight go %}
 package main
 
 import ("fmt" 
@@ -69,7 +69,7 @@ func send(n int){
 
 }
 
-~~~
+{% endhighlight %}
 
 
 
