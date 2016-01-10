@@ -5,12 +5,12 @@ description: "Explaining with examples the difference between buffered and unbuf
 modified: 2016-01-10
 tags: [Go channel message-passing]
 categories: [programming]
-
+---
 
 In this article we experiment with the behavior of buffered or unbuffered channels with the Go language.
 Here is the code used in the example, which consist in 4 gorouting which send an int value into the channel and a main which receives and print the 4 values from the channel.
 
-~~~ go
+~~~ python
 package main
 
 import ("fmt" 
@@ -76,7 +76,8 @@ func send(n int){
 
 
 
-## UNBUFFERED (Synchronous behavior)
+## UNBUFFERED - Synchronous behavior
+
 ### BUFF_SIZE = 0 or absent
 If the channel is unbuffered, sending a value blocks the process until the other side executes a receive on the channel. More than one process can send a value on the same channel, in that case they block and wait until the other side receives the value sent by the goroutine.
 The same behavior happens for the receive: it blocks until the other side does a send on the same channel.
@@ -104,7 +105,7 @@ EXIT
 
 ~~~
 
-## BUFFERED (Synchronous behavior if buffer not full(send)/empty(receive))
+## BUFFERED - Synchronous behavior if buffer not full(for send)/empty(for receive)
 
 ### Buffered with BUFF_SIZE = 1
 When the channel is buffered, you can write in that channel without blocking the goroutine until the buffer is full. After that, the behavior is the same sa unbuffered channels. When a process reads from the channel's buffer, it decreases the number of "slot" used, releasing the block of one sending goroutine.
