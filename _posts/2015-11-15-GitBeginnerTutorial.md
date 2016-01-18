@@ -77,6 +77,7 @@ Now, if you want to view the history of your commits, do a:
 git log [--options]
 {% endhighlight %}
 Some options are:
+
 * -p   which introduces the differences between each commit
 * --graph   to see an ASCII graph of branches and merges
 * --stat   to see some abbreviated stats for each commit
