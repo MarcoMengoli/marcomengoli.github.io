@@ -9,16 +9,27 @@ categories: [Tutorial]
 
 In this post are listes the very few basic git commands with a brief description.
 
+I suggest the reading of the beautiful free e-book written by Scott Chacon and Ben Straub available here: [https://progit.org/].
+It's very well written, very clear, with a lot of examples. This post contains only the syntax of few commands you can find in the book more in-depth.
+
+You can also improve your knowledge of command usage looking at the man help:
+{% highlight bash %}
+git COMMAND --help
+{% endhighlight %}
+Where COMMAND is the Git command you want to know deeply.
+
+
 ### Add/remove files to/from the staging area
 
 You can add your modified files to the stage (index) using:
 {% highlight bash %}
 git add <filename>
 {% endhighlight %}
-or
+or, to add every modified file:
 {% highlight bash %}
 git add *
 {% endhighlight %}
+
 
 
 To remove a file you have added to the staging area, you can do a rm in 2 ways:
@@ -145,6 +156,12 @@ There is also a shortucut to create a new branch and immediately move into it. W
 git checkout -b NewBranchName
 {% endhighlight %}
 where the -b option lets the checkout command to create the branch to switch on.
+
+
+To view the list of all branches, add the -l option as usual.
+{% highlight bash %}
+git commit -l
+{% endhighlight %}
 
 ### Marge
 
