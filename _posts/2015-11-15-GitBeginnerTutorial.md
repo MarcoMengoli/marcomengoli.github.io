@@ -9,7 +9,7 @@ categories: [Tutorial]
 
 In this post are listes the very few basic git commands with a brief description.
 
-I suggest the reading of the beautiful free e-book written by Scott Chacon and Ben Straub available here: [https://progit.org/].
+I suggest the reading of the beautiful free e-book written by Scott Chacon and Ben Straub available [here](https://progit.org/).
 It's very well written, very clear, with a lot of examples. This post contains only the syntax of few commands you can find in the book more in-depth.
 
 You can also improve your knowledge of command usage looking at the man help:
@@ -77,10 +77,10 @@ Now, if you want to view the history of your commits, do a:
 git log [--options]
 {% endhighlight %}
 Some options are:
--p   which introduces the differences between each commit
---graph   to see an ASCII graph of branches and merges
---stat   to see some abbreviated stats for each commit
---shortstat    to se an abbreviation of stat command
+* -p   which introduces the differences between each commit
+* --graph   to see an ASCII graph of branches and merges
+* --stat   to see some abbreviated stats for each commit
+* --shortstat    to se an abbreviation of stat command
 
 
 ### Working with remotes
