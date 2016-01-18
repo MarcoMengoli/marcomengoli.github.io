@@ -101,6 +101,7 @@ It's recommended to use this type of tag to store more information.
 
 {% highlight bash %}
 git tag -a TAG [-m TAG_MESSAGE]
+# for example, git tag -a v1.2 -m "some text here"
 {% endhighlight %}
 replacing TAG with your tag (eg v1.2) without quotes or double quotes
 TAG_MESSAGE, instead, is a text message between double quotes "...".
@@ -117,4 +118,52 @@ You can also tag later (a past branch). In this case the syntax is the following
 git tag -a TAG COMMIT_HASH
 {% endhighlight %}
 where COMMIT_HASH is the checksum (or a part of it) of the branch to tag.
+
+
+To view all tags (or a few using the search pattern):
+{% highlight bash %}
+git tag -l [pattern]
+{% endhighlight %}
+
+## BRANCH
+
+## Create branch and checkout
+
+To create a new branch:
+{% highlight bash %}
+git branch NewBranchName
+{% endhighlight %}
+
+
+After the creation of the new branch, we are still on the "old" branch, so we switch on the new with:
+{% highlight bash %}
+git checkout NewBranchName
+{% endhighlight %}
+
+There is also a shortucut to create a new branch and immediately move into it. We do that typing:
+{% highlight bash %}
+git checkout -b NewBranchName
+{% endhighlight %}
+where the -b option lets the checkout command to create the branch to switch on.
+
+### Marge
+
+First, checkout to the branch A in which you want to merge the other branch B. Doing this, the modifications in file B are merged in branch A (B->A).
+{% highlight bash %}
+git checkout MainBranchName
+
+git merge NewBranchName
+{% endhighlight %}
+
+After the merge operation, you maybe want to delete the branche merged. You can do this with command:
+{% highlight bash %}
+git branch -d NewBranchName
+{% endhighlight %}
+
+
+
+
+
+
+
 
