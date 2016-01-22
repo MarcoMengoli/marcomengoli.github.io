@@ -463,6 +463,8 @@ ul.social-buttons li a:active {
 	min-height: 300px;
 	overflow: hidden;
 	background-color: $header-color;
+	background-image: url("/images/header_pattern.jpg");
+	background-repeat: repeat;
 }
 .header-toggle{
 	display: block;
@@ -483,6 +485,8 @@ ul.social-buttons li a:active {
 		vertical-align: middle;
 		margin: 0 auto;
 		text-align: center;
+		background-image: url("/images/header_pattern.jpg");
+		background-repeat: no-repeat;
 	}
 	h1 {
 		font-weight: 700;
