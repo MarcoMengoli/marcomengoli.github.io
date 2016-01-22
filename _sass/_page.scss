@@ -472,6 +472,61 @@ ul.social-buttons li a:active {
 		display: none;
 	}
 }
+.header-image {
+	text-align: center;
+	width: 100%;
+	overflow: visible;
+	display:block;
+	#min-height:400px;
+	position:relative;
+	
+	
+	text-align: center;
+	background-image: url("/images/header_objects_trasp.png");
+	background-repeat: no-repeat;
+	
+    background-position: center top; 
+    
+    
+	.header-title-wrap {
+		display: block;
+		vertical-align: middle;
+		margin: 0 auto;
+		text-align: center;
+		
+		padding-top: 170px;
+		padding-bottom: 10px;
+	}
+	h1 {
+		font-weight: 700;
+		margin-bottom: 20px;
+		@include font-rem(32);
+		color: $white;
+		text-shadow: 1px 1px 4px rgba($base-color, 0.6);
+		display: none;
+		a {
+			color: $white;
+		}
+		@media #{$medium} {
+			display: block;
+		}
+		@media #{$medium} {
+			@include font-rem(26);
+		}
+		@media #{$large} {
+			@include font-rem(36);
+		}
+	}
+	h1.post-title{
+		display: block;
+		@media #{$medium}{
+			display: none;
+		}
+	}
+	p {
+		color: $white;
+	}
+}
 .header-title {
 	text-align: center;
 	position: absolute;
@@ -479,14 +534,15 @@ ul.social-buttons li a:active {
 	display: table;
 	margin-top: 0;
 	width: 100%;
+	min-height: 400px;
 	overflow: hidden;
+	background-image: url("/images/header_objects_trasp.png");
+	background-repeat: no-repeat;
 	.header-title-wrap {
 		display: table-cell;
 		vertical-align: middle;
 		margin: 0 auto;
 		text-align: center;
-		background-image: url("/images/header_pattern.jpg");
-		background-repeat: no-repeat;
 	}
 	h1 {
 		font-weight: 700;
@@ -519,11 +575,12 @@ ul.social-buttons li a:active {
 	}
 }
 .header-menu {
-	position: fixed;
+	#position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 70px;
+  display:block;
 	z-index: 20;
 	ul {
 		margin: 0 auto;
