@@ -599,7 +599,9 @@ ul.social-buttons li a:active {
 }
 
 .header-menu-overflow{
-	background-color: $menu-overflow;
+	#background-color: $menu-overflow;
+	background-image: url("/images/header_pattern.jpg");
+	background-repeat: repeat;
 	z-index: 100;
 	box-shadow: 0px 6px 5px rgba(0, 0, 0, 0.4);
 }
@@ -670,6 +672,7 @@ ul.social-buttons li a:active {
 	width: 200px;
 	z-index: 100;
 	list-style-type: none;
+	
 }
 
 .sub-item {
