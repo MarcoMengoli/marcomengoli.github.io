@@ -130,7 +130,7 @@ maxCol= sheet.max_column
 
 ## Full example
 
-{% highlight python %}
+{% highlight python linenos %}
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
