@@ -130,7 +130,7 @@ maxCol= sheet.max_column
 
 ## Full example
 
-{% highlight python linenos %}
+~~~ python
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -166,6 +166,6 @@ sheet[cell] = valueToWrite
 
 wb.save("name.xlsx")
 
-{% endhighlight %}
+~~~
 
 
