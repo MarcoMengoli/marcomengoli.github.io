@@ -84,27 +84,6 @@ Some options are:
 * --shortstat    to se an abbreviation of stat command
 
 
-### Working with remotes
-After the commits, you probably want to update the remote repository with your new changes.
-
-To upload the changes to the "master" branch on the original repository:
-{% highlight bash %}
-git push origin master
-{% endhighlight %}
-
-To view the list of your remotes:
-{% highlight bash %}
-git remote -v
-{% endhighlight %}
-
-
-If you want to refresh your local repository including the changes from the remote repository, you can do a pull in this way:
-
-{% highlight bash %}
-git pull
-{% endhighlight %}
-
-
 ### Tag
 You can tag a version in 2 ways: annotated or lightweight.
 
@@ -113,7 +92,7 @@ It's recommended to use this type of tag to store more information.
 
 {% highlight bash %}
 git tag -a TAG [-m TAG_MESSAGE]
-# for example, git tag -a v1.2 -m "some text here"
+# e.g. git tag -a v1.2 -m "some text here"
 {% endhighlight %}
 replacing TAG with your tag (eg v1.2) without quotes or double quotes
 TAG_MESSAGE, instead, is a text message between double quotes "...".
@@ -164,7 +143,7 @@ To view the list of all branches, add the -l option as usual.
 git commit -l
 {% endhighlight %}
 
-### Marge
+### Merge
 
 First, checkout to the branch A in which you want to merge the other branch B. Doing this, the modifications in file B are merged in branch A (B->A).
 {% highlight bash %}
@@ -179,9 +158,64 @@ git branch -d NewBranchName
 {% endhighlight %}
 
 
+## Remotes
+
+### Push
+After the commits, you probably want to update the remote repository with your new changes.
+
+To upload the changes to the "master" branch on the "origin" repository:
+{% highlight bash %}
+git push origin master
+{% endhighlight %}
+
+### Fetch
+
+To get all the data from a remote repository that you haven't on local, you can do a fetch instruction.
+It's important to note that Fetch instruction doesn't merge nothing and doesn't modify nothing you're working on, only downloads the data you haven'r yet.
+
+{% highlight bash %}
+git fetch remoteName
+{% endhighlight %}
+
+### Pull
+
+The Pull instruction has the effect of the Fetch, but it tries to merge the remote data with the local data of the branch you're currently working on.
+Pull fetches and merges data only for the current branch you're on, it doesn't afflict the other branches.
+
+{% highlight bash %}
+git pull
+{% endhighlight %}
 
 
+### Managing remotes
+
+You can add a remote repository other than the "origin" just doing:
+
+{% highlight bash %}
+git remote add remoteName URLofRepo
+#e.g. git remote add github_remote https://github.com/MarcoMengoli/MorseCodeEmitter_RPi_Py
+{% endhighlight %}
+Now you can do a push/fetch to/from this repository.
 
 
+To view the list of your remotes:
+{% highlight bash %}
+git remote -v
+{% endhighlight %}
 
+To inspect the content of a remote, knowing the branch available on the remote and local branch configured for pull or push, do:
+{% highlight bash %}
+git remote show remoteName
+#e.g. git remote show origin
+{% endhighlight %}
+
+To remove a remote:
+{% highlight bash %}
+git remote rm remoteName
+{% endhighlight %}
+
+To rename a remote:
+{% highlight bash %}
+git remote rename oldRemoteName newRemoteName
+{% endhighlight %}
 
