@@ -18,13 +18,13 @@ menu:
   - title: 'Categories'
     url: '/categories'
     type: 'categories'
-  - title: 'Favorites'
-    url: '#'
-    submenu:
-      - title: 'highlighter'
-        url: '/code-highlighting-post/'
-      - title: 'intro'
-        url: '/readability-post/'
+#  - title: 'Favorites'
+#    url: '#'
+#    submenu:
+#      - title: 'highlighter'
+#        url: '/code-highlighting-post/'
+#      - title: 'intro'
+#        url: '/readability-post/'
 
 # Owner/author information
 owner:
@@ -64,10 +64,11 @@ bing_verify:
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    Europe/Rome
 future:      true
-highlighter: pygments
+#highlighter: pygments
 markdown:    kramdown
 gems:
   - jekyll-sitemap
+  - jekyll-paginate
 sass:
   sass_dir: _sass
   style: compressed
@@ -79,11 +80,13 @@ permalink:   /:categories/:title/
 paginate: 3
 
 kramdown:
+  input: GFM
+  syntax_highlighter: rouge
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: true
+  enable_coderay: true
 
   coderay:
     coderay_line_numbers: nil
