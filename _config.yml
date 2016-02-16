@@ -65,6 +65,7 @@ bing_verify:
 timezone:    Europe/Rome
 future:      true
 #highlighter: pygments
+highlighter: rouge
 markdown:    kramdown
 gems:
   - jekyll-sitemap
