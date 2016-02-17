@@ -410,6 +410,16 @@ ul.social-buttons li a:active {
 		
 			a:hover {
 				color: $prominent-color;
+				
+				.term {
+					background-color: $gold;
+					color: $white;
+				}
+		
+				.count {
+					background-color: $gold;
+					color: $white;
+				}
 			}
 		
 			.term {
@@ -420,18 +430,6 @@ ul.social-buttons li a:active {
 			.count {
 				background-color: $prominent-darker-4-color;
 				color: $white;
-			}
-			
-			a:hover {
-				.term {
-					background-color: $gold;
-					color: $white;
-				}
-		
-				.count {
-					background-color: $gold;
-					color: $white;
-			}
 			}
 		}
 		
@@ -689,28 +687,40 @@ ul.social-buttons li a:active {
 			max-width: 900px;
 		}
 	}
+	
+	
 }
 .header-menu-top{
 	background-color: $menu-top;
+	
+	a:hover {
+		color: $prominent-complement-color;
+	}
 }
 
 .header-menu-overflow{
-	#background-color: $menu-overflow;
 	background-image: url("/images/header_pattern.jpg");
 	background-repeat: repeat;
 	z-index: 100;
 	box-shadow: 0px 6px 5px rgba(0, 0, 0, 0.4);
+	
+	a:hover {
+		color: $gold;
+	}
 }
+
 .header-menu-overflow ul li a{
 	color: $white;
 }
+
 
 .header-menu-top .sub-item{
 	background-color: $menu-top;
 }
 
 .header-menu-overflow .sub-item{
-	background-color: $menu-overflow;
+	//background-color: $menu-top;
+	background-image: url("/images/header_pattern.jpg");
 }
 
 .header-item,
@@ -749,10 +759,22 @@ ul.social-buttons li a:active {
 	}
 }
 
-.header-item.active,
-.header-item:hover{
-  border-top-color: $header-margin;
+.header-item.active, .header-item:hover{
+  border-top-color: $prominent-complement-color;
+  
+  a > h3 {
+  	color: $prominent-complement-color;
+  }
 }
+
+.header-menu-overflow .header-item.active, .header-menu-overflow .header-item:hover{
+  border-top-color: $gold;
+  
+  a > h3 {
+  	color: $gold;
+  }
+}
+
 
 .header-item .header-submenu{
 	display: none;
@@ -761,10 +783,19 @@ ul.social-buttons li a:active {
 .header-item:hover .header-submenu{
 	display: block;
 	position: absolute;
+	margin-left: -22px;
 }
 
 .header-submenu {
-	border-top: 2px solid $header-margin;
+	border-top: 2px solid $prominent-complement-color;
+	width: 200px;
+	z-index: 100;
+	list-style-type: none;
+	
+}
+
+.header-menu-overflow .header-submenu {
+	border-top: 2px solid $gold;
 	width: 200px;
 	z-index: 100;
 	list-style-type: none;
@@ -785,9 +816,23 @@ ul.social-buttons li a:active {
   display: table-cell;
   height: 50px;
 }
+
 .sub-item:hover {
-	border-bottom-color: $header-margin;
+	border-bottom-color: $prominent-complement-color;
+	
+	a {
+  		color: $prominent-complement-color;
+  }
 }
+
+.header-menu-overflow .sub-item:hover {
+	border-bottom-color: $gold;
+	
+	a {
+  		color: $gold;
+  }
+}
+
 
 .button-twitter {
 	color: $white;

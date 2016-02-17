@@ -22,11 +22,7 @@ body {
 $base-color				 : rgba(#222,0.8);
 $header-color			 : rgba(#000,0.8);
 $sub-item-color			 : rgba(#000, 0.1);
-$header-margin			 : #F45145;
 $menu-top				 : white;
-//$menu-overflow		 : #2E2E2E;
-//$body-color      		 : #e8e8e8;
-//$body-color      		 : #ededed;
 $body-color      		 : #f1f1f1;
 $text-color      		 : rgba(#222,0.8);
 $comp-color 	 		 : complement(#222);
@@ -42,8 +38,7 @@ $danger				     : #C64537;
 $info				     : #308cbc;
 
 $prominent-color		 : #0cabda;
-$menu-overflow			 : #da3b0c;  // complementary to prominent-color
-$prominent-complement-color : #da3b0c;
+$prominent-complement-color : #F45145;
 $gold :#fec503;
 
 $prominent-darker-1-color : #0a8eb5;
@@ -60,8 +55,6 @@ $prominent-lighter-4-color : #9de4fa;
 $prominent-lighter-5-color : #c2effc;
 $prominent-lighter-6-color : #e7f9fe;
 
-//$prominent-graytone-light-color: #cddadd;
-//$prominent-graytone-light-color: #d6e5e8;
 $prominent-graytone-light-color: #F4F8F9;
 
 // Screen Size
