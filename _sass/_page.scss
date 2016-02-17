@@ -115,10 +115,18 @@ body {
 	@include font-rem(12);
 	text-transform: uppercase;
 	//color: lighten($base-color,60);
-	color: $prominent-color;
+	
+	color: $prominent-darker-4-color;
+	
 	a {
+		color: $prominent-darker-2-color;
+	}
+	
+	li > a {
 		color: $prominent-complement-color; // link facebook, twitter etc...
 	}
+	
+	
 	.vcard {
 		&:before {
 			content: " by ";
@@ -394,26 +402,42 @@ ul.social-buttons li a:active {
 			margin-right: auto;
 		}
 		
-		h2 {
+		ul {
+		
+			a {
+				color: $text-color;
+			}
+		
+			a:hover {
+				color: $prominent-color;
+			}
+		
+			.term {
+				background-color: $prominent-darker-2-color;
+				color: $white;
+			}
+		
+			.count {
+				background-color: $prominent-darker-4-color;
+				color: $white;
+			}
+			
+			a:hover {
+				.term {
+					background-color: $gold;
+					color: $white;
+				}
+		
+				.count {
+					background-color: $gold;
+					color: $white;
+			}
+			}
+		}
+		
+		
+		h1, h1 > a, h2 {
 			color: $prominent-color;
-		}
-		
-		a {
-			color: $text-color;
-		}
-		
-		a:hover {
-			color: $prominent-darker-1-color;
-		}
-		
-		.term {
-			background-color: $prominent-darker-2-color;
-			color: $white;
-		}
-		
-		.count {
-			background-color: $prominent-darker-4-color;
-			color: $white;
 		}
 	}
 	article {
