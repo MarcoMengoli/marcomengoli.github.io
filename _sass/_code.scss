@@ -1,8 +1,10 @@
 code {
 	margin-bottom: 1.5em;
 	@include font(12);
-	color: #043f51;
+	//color: #043f51;
 	//background-color: #11134B;
+	
+	color: #348e9e;
 	background-color: $prominent-graytone-light-color;
 	@include rounded(5px);
 	margin: 0;
