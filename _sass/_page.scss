@@ -46,8 +46,10 @@ body {
 	}
 }
 
+
+
 .entry-date {
-	color: $white;
+	
 }
 ///sections
 
@@ -112,9 +114,10 @@ body {
 .entry-meta {
 	@include font-rem(12);
 	text-transform: uppercase;
-	color: lighten($base-color,60);
+	//color: lighten($base-color,60);
+	color: $prominent-color;
 	a {
-		color: lighten($base-color,60);
+		color: $prominent-complement-color; // link facebook, twitter etc...
 	}
 	.vcard {
 		&:before {
@@ -126,17 +129,17 @@ body {
 		margin: 4px;
 		color: $white;
 		@include rounded(3px);
-		background-color: lighten($base-color,50);
+		background-color: $prominent-darker-2-color;
 		span {
 			float: left;
 			padding: 2px 6px;
 		}
 		.count {
-			background-color: lighten($base-color,40);
+			background-color: $prominent-darker-3-color;
 			@include border-radius(3px,3px,0,0);
 		}
 		&:hover {
-			background-color: lighten($base-color,40);
+			background-color: $prominent-darker-3-color;
 		}
 	}
 	.entry-reading-time {
@@ -273,6 +276,7 @@ header .entry-meta {
 	height: 35px;
 	a {
 		@extend .btn;
+		background-color: $prominent-darker-4-color;
 	}
 }
 .read-more-content {
@@ -287,9 +291,10 @@ header .entry-meta {
 	}
 	h3 {
 		margin: 0;
+		color: $prominent-color;
 		@include font-rem(28);
 		a {
-			color: $text-color;
+			color: $prominent-color;
 		}
 		@media #{$medium} {
 			@include font-rem(36);
@@ -323,7 +328,7 @@ ul.social-buttons li a {
     line-height: 40px;
     outline: 0;
 	  color: #fff;
-    background-color: #222;
+    background-color: $prominent-darker-2-color;
 
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
@@ -347,7 +352,7 @@ ul.social-buttons li a:hover,
 ul.social-buttons li a:focus,
 ul.social-buttons li a:active {
     color: #222;
-    background-color: #fec503;
+    background-color: $gold;
 }
 .read-more-list {
 	border-top: solid 2px lighten($base-color,80);
@@ -387,6 +392,28 @@ ul.social-buttons li a:active {
 			margin-top: 50px;
 			margin-left: auto;
 			margin-right: auto;
+		}
+		
+		h2 {
+			color: $prominent-color;
+		}
+		
+		a {
+			color: $text-color;
+		}
+		
+		a:hover {
+			color: $prominent-darker-1-color;
+		}
+		
+		.term {
+			background-color: $prominent-darker-2-color;
+			color: $white;
+		}
+		
+		.count {
+			background-color: $prominent-darker-4-color;
+			color: $white;
 		}
 	}
 	article {
@@ -540,7 +567,7 @@ ul.social-buttons li a:active {
 	h1 {
 		font-weight: 700;
 		margin-bottom: 20px;
-		@include font-rem(32);
+		@include font-rem(36);
 		color: $white;
 		text-shadow: 1px 1px 4px rgba($base-color, 0.6);
 		display: none;
@@ -563,9 +590,16 @@ ul.social-buttons li a:active {
 			display: none;
 		}
 	}
+	
+	h2 {
+		color: $white;
+		@include font-rem(18);
+	}
+	
 	p {
 		color: $white;
 	}
+	
 }
 .header-title {
 	text-align: center;
