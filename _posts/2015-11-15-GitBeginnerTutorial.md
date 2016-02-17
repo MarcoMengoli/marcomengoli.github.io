@@ -122,9 +122,9 @@ git tag -l [pattern]
 ### Create branch and checkout
 
 To create a new branch:
-{% highlight bash %}
+~~~ shell
 git branch NewBranchName
-{% endhighlight %}
+~~~
 
 
 After the creation of the new branch, we are still on the "old" branch, so we switch on the new with:
