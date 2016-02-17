@@ -14,6 +14,25 @@ body {
 	h1, h2, h3, h4, h5, h6, p, li {
 		word-wrap: break-word;
 	}
+	
+	h1, h1 > a {
+		color: $prominent-color;
+	}
+	h2, h2 > a  {
+		color: $prominent-darker-1-color;
+	}
+	h3, h3 > a  {
+		color: $prominent-darker-2-color;
+	}
+	h4, h4 > a  {
+		color: $prominent-darker-3-color;
+	}
+	h5, h5 > a  {
+		color: $prominent-darker-4-color;
+	}
+	h6, h6 > a  {
+		color: $prominent-darker-5-color;
+	}
 }
 .entry-content {
 	@include font-size(16);
@@ -153,6 +172,25 @@ header .entry-meta {
 			> p:first-child {
 				@include font-size(20);
 			}
+		}
+		
+		h1 {
+			color: $prominent-color;
+		}
+		h2 {
+			color: $prominent-darker-1-color;
+		}
+		h3 {
+			color: $prominent-darker-2-color;
+		}
+		h4 {
+			color: $prominent-darker-3-color;
+		}
+		h5 {
+			color: $prominent-darker-4-color;
+		}
+		h6 {
+			color: $prominent-darker-5-color;
 		}
 	}
 	#disqus_thread {
