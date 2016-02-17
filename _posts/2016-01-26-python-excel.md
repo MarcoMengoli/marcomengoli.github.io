@@ -9,7 +9,7 @@ categories: [Programming Python]
 
 Python has a lot of very useful libraries, one of these is *openpyxl*, which gives you the possibility to work with Excel spreadsheets with semplicity.
 
-In this post we will use the Python2 version of the library. The version for Python3 is also available, and shall also be compatible with this one.
+In this post we will use the Python2 version of the library. The version for Python3 is also available, and should also be compatible with this one.
 
 The full project documentation is available [here](http://openpyxl.readthedocs.org/en/2.3.3/).
 
@@ -47,9 +47,9 @@ pip install pillow
 ~~~
 
 
-##Using the library
+## Using the library
 
-#### Shebang & importing
+### Shebang & importing
 
 ~~~ python
 #!/usr/bin/env python3
