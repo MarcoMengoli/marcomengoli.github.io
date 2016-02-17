@@ -18,6 +18,7 @@ git COMMAND --help
 {% endhighlight %}
 Where COMMAND is the Git command you want to know deeply.
 
+## BASICS
 
 ### Add/remove files to/from the staging area
 
@@ -84,7 +85,7 @@ Some options are:
 * --shortstat    to se an abbreviation of stat command
 
 
-### Tag
+## TAG
 You can tag a version in 2 ways: annotated or lightweight.
 
 ANNOTATED tags are stored in the Git database adding some informations.
@@ -118,7 +119,7 @@ git tag -l [pattern]
 
 ## BRANCH
 
-## Create branch and checkout
+### Create branch and checkout
 
 To create a new branch:
 {% highlight bash %}
@@ -137,10 +138,11 @@ git checkout -b NewBranchName
 {% endhighlight %}
 where the -b option lets the checkout command to create the branch to switch on.
 
+### List
 
 To view the list of all branches, add the -l option as usual.
 {% highlight bash %}
-git commit -l
+git branch -l
 {% endhighlight %}
 
 ### Merge
@@ -152,13 +154,22 @@ git checkout MainBranchName
 git merge NewBranchName
 {% endhighlight %}
 
+
+### Delete
+
+
 After the merge operation, you maybe want to delete the branche merged. You can do this with command:
 {% highlight bash %}
 git branch -d NewBranchName
 {% endhighlight %}
 
+To force the deletion of a branch despite there are changes not merged, use the -D option (uppercase):
+{% highlight bash %}
+git branch -D NewBranchName
+{% endhighlight %}
 
-## Remotes
+
+## REMOTES
 
 ### Push
 After the commits, you probably want to update the remote repository with your new changes.
@@ -186,6 +197,26 @@ Pull fetches and merges data only for the current branch you're on, it doesn't a
 git pull
 {% endhighlight %}
 
+### Delete
+
+To delete a remote branch, you can do in 2 ways:
+
+- from Git 1.5:
+{% highlight bash %}
+git push origin :remoteBranchName
+{% endhighlight %}
+
+from Git 1.7:
+{% highlight bash %}
+git push origin --delete remoteBranchName
+{% endhighlight %}
+
+### Difference local/remote branches
+
+To view the differences between a local branch and the corresponding remote branch, you have first do execute a Fetch instruction, then Diff:
+{% highlight bash %}
+git diff localBranchName remoteName/remotBranchName
+{% endhighlight %}
 
 ### Managing remotes
 
