@@ -19,26 +19,43 @@ body {
 
 // Colors
 // --------------------------------------------------
-$base-color				   : rgba(#222,0.8);
-$header-color				 : rgba(#000,0.8);
+$base-color				 : rgba(#222,0.8);
+$header-color			 : rgba(#000,0.8);
 $sub-item-color			 : rgba(#000, 0.1);
-$header-margin			 : #F45145;
-$menu-top				 		 : white;
-$menu-overflow			 : #2E2E2E;
-$body-color      		 : #e8e8e8;
+$menu-top				 : white;
+$body-color      		 : #f1f1f1;
 $text-color      		 : rgba(#222,0.8);
-$comp-color 	 		   : complement(#222);
+$comp-color 	 		 : complement(#222);
 $border-color    		 : lighten(#222,60);
 $white           		 : #fff;
 $black           		 : #000;
 $link-color 		     : rgba(#222,0.8);
 
-$primary			       : #222;
-$success			       : #5cb85c;
-$warning			       : #dd8338;
-$danger				       : #C64537;
-$info				         : #308cbc;
+$primary			     : #222;
+$success			     : #5cb85c;
+$warning			     : #dd8338;
+$danger				     : #C64537;
+$info				     : #308cbc;
 
+$prominent-color		 : #0cabda;
+$prominent-complement-color : #F45145;
+$gold :#fec503;
+
+$prominent-darker-1-color : #0a8eb5;
+$prominent-darker-2-color : #097fa2;
+$prominent-darker-3-color : #07627d;
+$prominent-darker-4-color : #06536a;
+$prominent-darker-5-color : #054558;
+$prominent-darker-6-color : #043645;
+
+$prominent-lighter-1-color : #40cbf4;
+$prominent-lighter-2-color : #65d5f7;
+$prominent-lighter-3-color : #8adff9;
+$prominent-lighter-4-color : #9de4fa;
+$prominent-lighter-5-color : #c2effc;
+$prominent-lighter-6-color : #e7f9fe;
+
+$prominent-graytone-light-color: #F4F8F9;
 
 // Screen Size
 // --------------------------------------------------
