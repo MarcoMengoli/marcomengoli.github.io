@@ -31,17 +31,21 @@ owner:
   name:           Marco Mengoli
   site:           http://marcomengoli.github.io/
   avatar:         images/avatar.jpg
-  bio:            "Software engineering student."
-  email:          you@email.com
+  bio:            "Software Engineering student at University of Bologna. 
+  I love to solve problems and experiment new things. 
+  I'm an enthusiast maker, I love to make lots of projects with my Iot boards. I found on electronics a new really enjoyable hobby. 
+  My favourite thematic is Software Engineering, in particular the continuous improvement of the quality of the products I develop and also the way I do it. 
+  View more in the About page"
+  email:          marco.mengoli4@yahoo.it
   # Social networking links used in footer. Update and remove as you like.
-  #twitter: Marco Mengoli
+  # twitter: Marco Mengoli
   facebook: Marco Mengoli
   github: MarcoMengoli
-  stackexchange:
+  # stackexchange:
   linkedin:
-  instagram:
-  flickr:
-  tumblr:
+  # instagram:
+  # flickr:
+  # tumblr:
   # google plus id, include the '+', eg +Marco Mengoli
   google_plus:    +Marco Mengoli
 

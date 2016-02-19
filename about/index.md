@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About the author
+title: About Marco
 image:
   feature:
   credit:
@@ -9,7 +9,10 @@ comments: false
 modified: 2015-11-27
 ---
 
+## Marco Mengoli
+
 Software Engineering student at University of Bologna.
+
 Since I was a child I love to solve problems. I really like to experiment new things, find creative solutions and implement do-it-yourself projects.
 
 My main focus is in software development, in particular my favourite thematic is Software Engineering. My main ambition is to always improve the quality of the products I develop and also the way I do it.

@@ -1,34 +1,28 @@
 ---
 layout: page
-title: About the Jekyll Theme
+title: About Marco
 image:
-  feature: abstract-5.jpg
-  credit: dargadgetz
-  creditlink: http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/
+  feature:
+  credit:
+  creditlink:
 comments: false
-modified: 2014-12-24
+modified: 2015-11-27
 ---
 
-They say three times the charm, so here is another free responsive Jekyll blog theme for you. I've learned a ton since open sourcing my first two themes [on Github](http://github.com/mmistakes), and wanted to try a few new things this time around. 
+### Marco Mengoli
 
-If you've used any of [my other themes](http://mademistakes.com/work/jekyll-themes/) most of this should be familiar territory...
+Software Engineering student at University of Bologna.
 
-## What HPSTR brings to the table:
+Since I was a child I love to solve problems. I really like to experiment new things, find creative solutions and implement do-it-yourself projects.
 
-* Responsive templates for post, page, and post index `_layouts`. Looks great on mobile, tablet, and desktop devices.
-* Gracefully degrads in older browsers. Compatible with Internet Explorer 8+ and all modern browsers.  
-* Modern and minimal design.
-* Sweet animated menu.
-* Background image support.
-* Readable typography to make your words shine.
-* Support for large images to call out your favorite posts.
-* Built-in support for Sass courtesy of Jekyll 2.x.
-* Optional [Disqus](http://disqus.com) comments.
-* Simple and clear permalink structure[^1].
-* [Open Graph](https://developers.facebook.com/docs/opengraph/) and [Twitter Cards](https://dev.twitter.com/docs/cards) support for a better social sharing experience.
-* Simple [custom 404 page]({{ site.url }}/404.html) to get you started.
-* Stylesheets for Pygments and Coderay [syntax highlighting]({{ site.url }}/code-highlighting-post/) to make your code examples look snazzy.
+My main focus is in software development, in particular my favourite thematic is Software Engineering. My main ambition is to always improve the quality of the products I develop and also the way I do it.
 
-<div markdown="0"><a href="{{ site.url }}/theme-setup/" class="btn btn-info">Theme Setup</a> <a href="https://github.com/mmistakes/hpstr-jekyll-theme" class="btn btn-success">Download HPSTR</a></div>
+I don't have a favorite language, because I strongly believe that each language has its own shot target. I mostly develop my software systems in C, C++, Java and Python. I have also used C#, Javascript, Visual Basic 6.0, Go and ASP for some academical projects and PHP, HTML & CSS when I produced web sites of some private companies or associations.
 
-[^1]: Example: *domain.com/category-name/post-title*
+In the last years I'm an enthusiast maker: I really love to make lots of projects with my 4 Raspberry Pi boards using Linux Debian's based Raspbian distribution. I also use an Arduino Uno, a Sparkfun ESP8266 and a UDOO quad board. I found on electronics a new really enjoyable hobby.
+
+I'm very happy to collaborate with the DICAM department (Department of Civil, Chemical, Environmental, and Materials Engineering) building software to create a network of remote GPS sensors -made by a Raspberry Pi, a 3G dongle and a differential GPS antenna- to monitor critical areas from remote. I also work on software to simulate GPS constellations to calculate the quality of satellite visibility in urban environments.
+
+I also work since I was 16 on the realization of audio and video services for concerts and public festivals, included making video footages on national live television for basketball matches.
+
+One thing that gives me some satisfactions is to teach and give reps of informatics and maths to younger students. I also have partecipated on some public initiatives for approaching teenagers to computing.

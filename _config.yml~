@@ -2,7 +2,7 @@ title:            Marco Mengoli's Blog
 description:      Blog that includes my notes on programming
 disqus_shortname: mmblog
 reading_time:     true
-words_per_minute: 100
+words_per_minute: 40
 logo:             images/logo.png
 # Your site's domain goes here (eg: //mmistakes.github.io, http://mademistakes.com, etc)
 # When testing locally leave blank or use http://localhost:4000
@@ -18,30 +18,34 @@ menu:
   - title: 'Categories'
     url: '/categories'
     type: 'categories'
-  - title: 'Favorites'
-    url: '#'
-    submenu:
-      - title: 'highlighter'
-        url: '/code-highlighting-post/'
-      - title: 'intro'
-        url: '/readability-post/'
+#  - title: 'Favorites'
+#    url: '#'
+#    submenu:
+#      - title: 'highlighter'
+#        url: '/code-highlighting-post/'
+#      - title: 'intro'
+#        url: '/readability-post/'
 
 # Owner/author information
 owner:
   name:           Marco Mengoli
   site:           http://marcomengoli.github.io/
   avatar:         images/avatar.jpg
-  bio:            "Software engineering student."
-  email:          you@email.com
+  bio:            "Software Engineering student at University of Bologna. 
+  I love to solve problems and experiment new things. 
+  I'm an enthusiast maker, I love to make lots of projects with my Iot boards. I found on electronics a new really enjoyable hobby. 
+  My favourite thematic is Software Engineering, in particular the continuous improvement of the quality of the products I develop and also the way I do it. 
+  View more in the About page"
+  email:          marco.mengoli4@yahoo.it
   # Social networking links used in footer. Update and remove as you like.
-  #twitter: Marco Mengoli
+  # twitter: Marco Mengoli
   facebook: Marco Mengoli
   github: MarcoMengoli
-  stackexchange:
+  # stackexchange:
   linkedin:
-  instagram:
-  flickr:
-  tumblr:
+  # instagram:
+  # flickr:
+  # tumblr:
   # google plus id, include the '+', eg +Marco Mengoli
   google_plus:    +Marco Mengoli
 
@@ -64,10 +68,12 @@ bing_verify:
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    Europe/Rome
 future:      true
-highlighter: pygments
+#highlighter: pygments
+highlighter: rouge
 markdown:    kramdown
 gems:
   - jekyll-sitemap
+  - jekyll-paginate
 sass:
   sass_dir: _sass
   style: compressed
@@ -76,14 +82,16 @@ sass:
 permalink:   /:categories/:title/
 
 # Amount of post to show on home page
-paginate: 5
+paginate: 3
 
 kramdown:
+  input: GFM
+  syntax_highlighter: rouge
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: true
+  enable_coderay: true
 
   coderay:
     coderay_line_numbers: nil
