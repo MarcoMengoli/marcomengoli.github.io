@@ -53,6 +53,7 @@ removes the file also from the disk other then the staging area.
 
 ### Check the state
 To check what's the state of each file, run:
+
 ~~~shell
 git status
 ~~~ 
@@ -68,9 +69,11 @@ git commit -m "commit message"
 
 You can also commit writing more complex messages using the default git editor.
 To do that, just do a 
+
 ~~~shell
 git commit
 ~~~ 
+
 The default git editor will appear. Type the message, save and exit to execute the commit.
 To change the default git editor just do:
 
@@ -81,9 +84,11 @@ replacing YOUR_EDITOR_NAME_HERE with emacs, vim, nano or what you want.
 
 
 Now, if you want to view the history of your commits, do a:
+
 ~~~shell
 git log [--options]
 ~~~ 
+
 Some options are:
 
 * -p   which introduces the differences between each commit
@@ -102,10 +107,12 @@ It's recommended to use this type of tag to store more information.
 git tag -a TAG [-m TAG_MESSAGE]
 # e.g. git tag -a v1.2 -m "some text here"
 ~~~ 
+
 replacing TAG with your tag (eg v1.2) without quotes or double quotes
 TAG_MESSAGE, instead, is a text message between double quotes "...".
 
 LIGHTWEIGHT tag are just a sort of pointer to a branch.
+
 ~~~shell
 git tag TAG-lw
 # for example, git tag v1.2-lw
@@ -113,6 +120,7 @@ git tag TAG-lw
 
 
 You can also tag later (a past branch). In this case the syntax is the following:
+
 ~~~shell
 git tag -a TAG COMMIT_HASH
 ~~~ 
@@ -120,6 +128,7 @@ where COMMIT_HASH is the checksum (or a part of it) of the branch to tag.
 
 
 To view all tags (or a few using the search pattern):
+
 ~~~shell
 git tag -l [pattern]
 ~~~ 
@@ -129,20 +138,24 @@ git tag -l [pattern]
 ### Create branch and checkout
 
 To create a new branch:
+
 ~~~shell
 git branch NewBranchName
 ~~~
 
 
 After the creation of the new branch, we are still on the "old" branch, so we switch on the new with:
+
 ~~~shell
 git checkout NewBranchName
 ~~~ 
 
 There is also a shortucut to create a new branch and immediately move into it. We do that typing:
+
 ~~~shell
 git checkout -b NewBranchName
 ~~~ 
+
 where the -b option lets the checkout command to create the branch to switch on.
 
 ### List
@@ -163,6 +176,7 @@ git branch --no-merged
 ### Merge
 
 First, checkout to the branch A in which you want to merge the other branch B. Doing this, the modifications in file B are merged in branch A (B->A).
+
 ~~~shell
 git checkout MainBranchName
 
@@ -174,11 +188,13 @@ git merge NewBranchName
 
 
 After the merge operation, you maybe want to delete the branche merged. You can do this with command:
+
 ~~~shell
 git branch -d NewBranchName
 ~~~ 
 
 To force the deletion of a branch despite there are changes not merged, use the -D option (uppercase):
+
 ~~~shell
 git branch -D NewBranchName
 ~~~ 
@@ -235,6 +251,7 @@ e.g. git stash drop stash@{0}
 After the commits, you probably want to update the remote repository with your new changes.
 
 To upload the changes to the "master" branch on the "origin" repository:
+
 ~~~shell
 git push origin master
 ~~~ 
@@ -249,8 +266,6 @@ git fetch remoteName
 ~~~ 
 
 ### Pull
-
-
 
 The *Pull* command is similar to *Fetch*, but it merges the remote data with the local data of the branch you're currently working on.
 Pull fetches and merges data only for the current branch you're on, it doesn't afflict the other branches.
@@ -273,11 +288,13 @@ git pull <remote> <branch>>
 To delete a remote branch, you can do in 2 ways:
 
 - from Git 1.5:
+
 ~~~shell
 git push origin :remoteBranchName
 ~~~ 
 
 from Git 1.7:
+
 ~~~shell
 git push origin --delete remoteBranchName
 ~~~ 
@@ -285,6 +302,7 @@ git push origin --delete remoteBranchName
 ### Difference local/remote branches
 
 To view the differences between a local branch and the corresponding remote branch, you have first do execute a Fetch instruction, then Diff:
+
 ~~~shell
 git diff localBranchName remoteName/remotBranchName
 ~~~ 
@@ -301,22 +319,26 @@ Now you can do a push/fetch to/from this repository.
 
 
 To view the list of your remotes:
+
 ~~~shell
 git remote -v
 ~~~ 
 
 To inspect the content of a remote, knowing the branch available on the remote and local branch configured for pull or push, do:
+
 ~~~shell
 git remote show remoteName
 #e.g. git remote show origin
 ~~~ 
 
 To remove a remote:
+
 ~~~shell
 git remote rm remoteName
 ~~~ 
 
 To rename a remote:
+
 ~~~shell
 git remote rename oldRemoteName newRemoteName
 ~~~ 

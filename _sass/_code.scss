@@ -1,5 +1,5 @@
 code {
-	margin-bottom: 1.5em;
+	#margin-bottom: 1.5em;
 	@include font(12);
 	//color: #043f51;
 	//background-color: #11134B;
@@ -7,9 +7,12 @@ code {
 	color: #348e9e;
 	background-color: $prominent-graytone-light-color;
 	@include rounded(5px);
+	
 	margin: 0;
-	padding: 0.8em;
-	display: block;
+	padding: 0;
+	#padding: 0.8em;
+	#display: block;
+	
 	.lineno { padding-right: 12px; color: #8f908a;}
 	.hll { background-color: #49483e }
 	.err { color: #960050; background-color: #1e0010 } /* Error */

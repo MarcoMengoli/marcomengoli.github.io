@@ -111,8 +111,8 @@ li {
 }
 pre {
 	@include font-rem(12);
-	line-height: 1.5;
-	overflow-x: auto;
+	//line-height: 1.5;
+	//overflow-x: auto;
 	&::-webkit-scrollbar {
 		height: 12px;
 		background-color: #34362e;
@@ -122,4 +122,8 @@ pre {
 		background-color: #6a6d5d;
 		@include rounded(4px);
 	}
+	
+	background-color: #f4f8f9;
+	padding: 0.2em;
+	padding-left: 1.0em;
 }
