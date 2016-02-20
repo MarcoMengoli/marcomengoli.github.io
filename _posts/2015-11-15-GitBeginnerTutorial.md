@@ -270,7 +270,7 @@ git fetch remoteName
 The *Pull* command is similar to *Fetch*, but it merges the remote data with the local data of the branch you're currently working on.
 Pull fetches and merges data only for the current branch you're on, it doesn't afflict the other branches.
 
-** Note that your branch must be set up to track a remote branch to run the Pull command. By default the Clone command sets up only the master branch **
+**Note that your branch must be set up to track a remote branch to run the Pull command. By default the Clone command sets up only the master branch**
 
 ~~~shell
 git pull
