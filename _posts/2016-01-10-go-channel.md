@@ -47,7 +47,7 @@ The behavior of a receive is instead:
 
 Here's the code used in the example. It consists in 4 goroutines which send an integer value into the channel and a main which receives and prints the 4 values from read the channel.
 
-```go
+~~~go
 
 package main
 
@@ -90,7 +90,7 @@ func send(n int){
 
 }
 
-```
+~~~
 
 
 
@@ -112,7 +112,7 @@ The same behavior happens for the receive:
 
 
 
-```
+~~~
 
 P1: I want to write value '1' into the channel
 P2: I want to write value '2' into the channel
@@ -132,7 +132,7 @@ P3: I have written value '3' into the channel
 P4: I have written value '4' into the channel
 EXIT
 
-```
+~~~
 
 ### Buffered - Asynchronous behavior (until buffer not full)
 
@@ -143,7 +143,7 @@ If a goroutine executes a receive operation, the buffer is empty and no other va
 
 Here there are 2 examples of buffered channel behaviors with buffer size set to 1 and 2 respectively.
 
-```
+~~~
 
 P1: I want to write value '1' into the channel
 P1: I have written value '1' into the channel
@@ -163,11 +163,11 @@ P4: I have written value '4' into the channel
 		MAIN: I have read a value from the channel
 EXIT
 
-```
+~~~
 
 #### Buffered with BUFF_SIZE = 2
 
-```
+~~~
 
 P1: I want to write value '1' into the channel
 P1: I have written value '1' into the channel
@@ -187,12 +187,12 @@ P4: I have written value '4' into the channel
 		MAIN: I have read a value from the channel
 EXIT
 
-```
+~~~
 
 
 #### Buffered with BUFF_SIZE = 4
 
-```
+~~~
 
 P1: I want to write value '1' into the channel
 P1: I have written value '1' into the channel
@@ -212,12 +212,12 @@ P4: I have written value '4' into the channel
 		MAIN: I have read a value from the channel
 EXIT
 
-```
+~~~
 
 
 #### Buffered with BUFF_SIZE = 5
 
-```
+~~~
 
 P1: I want to write value '1' into the channel
 P1: I have written value '1' into the channel
@@ -237,4 +237,4 @@ P4: I have written value '4' into the channel
 		MAIN: I have read a value from the channel
 EXIT
 
-```
+~~~
