@@ -13,34 +13,41 @@ I suggest the reading of the beautiful free e-book written by Scott Chacon and B
 It's very well written, very clear, with a lot of examples. This post contains only the syntax of few commands you can find in the book more in-depth.
 
 You can also improve your knowledge of command usage looking at the man help:
+
 ~~~shell
-git COMMAND --help
+git <command-name> --help
 ~~~ 
-Where COMMAND is the Git command you want to know deeply.
+
+Where `command-name` is the Git command you want to know deeply.
 
 ## BASICS
 
-### Add/remove files to/from the staging area
+### Adding/removing files to/from the staging area
 
 You can add your modified files to the stage (index) using:
+
 ~~~shell
 git add <filename>
 ~~~ 
+
 or, to add every modified file:
+
 ~~~shell
 git add *
 ~~~ 
 
-
-
 To remove a file you have added to the staging area, you can do a rm in 2 ways:
+
 ~~~shell
 git rm --cache<filename>
 ~~~ 
+
 will remove the file to the staging area, but it remains on your working directory (it's not removed from your disk), while
+
 ~~~shell
 git rm <filename>
 ~~~ 
+
 removes the file also from the disk other then the staging area.
 
 
