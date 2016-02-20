@@ -168,6 +168,51 @@ To force the deletion of a branch despite there are changes not merged, use the 
 git branch -D NewBranchName
 ``` 
 
+## STASH
+
+Sometimes it happens that you're working on a branch, you have uncommitted files you don't want to commit because the work is not already completed.
+This makes impossibile to change branch.
+To remedy this problem, you can use *stash*.
+*Stash* takes the uncommitted files on your working directory and stores them into a stash list.
+
+### Stashing
+To insert the uncommitted files into the stash list, run:
+
+~~~ shell
+git stash
+~~~
+
+Now running a *git status* you can see that the working directory is clean.
+This means that you can switch to another branch and do the work.
+
+### List
+To view the stash list, run:
+
+~~~ shell
+git stash list
+~~~
+
+### Apply stash
+After you have switched to another branch and completed the work, you maybe want to switch back to the previous branch and resume the work you were doing before.
+
+In this case you need to retrieve the stashed files and apply them to those on the current branch. To do it, print the stash list and run:
+
+~~~ shell
+git stash apply <stash-id>
+e.g. git stash apply stash@{0}
+~~~
+
+### Drop stash
+If you have successfully applied the stash, it remains into the stash list.
+If you have not applied the stash, maybe you don't need no more those stashed files.
+
+It both cases it's a good thing to delete those files. Do delete a stash, run:
+
+~~~ shell
+git stash drop <stash-id>
+e.g. git stash drop stash@{0}
+~~~
+
 
 ## REMOTES
 
@@ -196,6 +241,13 @@ Pull fetches and merges data only for the current branch you're on, it doesn't a
 ```shell
 git pull
 ``` 
+
+If there is no tracking information for the current branch you are on, you have to specify which branch you want to merge with.
+You can do it adding the remote and branch names.
+
+~~~ shell
+git pull <remote> <branch>>
+~~~
 
 ### Delete
 
