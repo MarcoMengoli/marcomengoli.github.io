@@ -13,9 +13,9 @@ I suggest the reading of the beautiful free e-book written by Scott Chacon and B
 It's very well written, very clear, with a lot of examples. This post contains only the syntax of few commands you can find in the book more in-depth.
 
 You can also improve your knowledge of command usage looking at the man help:
-```shell
+~~~shell
 git COMMAND --help
-``` 
+~~~ 
 Where COMMAND is the Git command you want to know deeply.
 
 ## BASICS
@@ -23,60 +23,60 @@ Where COMMAND is the Git command you want to know deeply.
 ### Add/remove files to/from the staging area
 
 You can add your modified files to the stage (index) using:
-```shell
+~~~shell
 git add <filename>
-``` 
+~~~ 
 or, to add every modified file:
-```shell
+~~~shell
 git add *
-``` 
+~~~ 
 
 
 
 To remove a file you have added to the staging area, you can do a rm in 2 ways:
-```shell
+~~~shell
 git rm --cache<filename>
-``` 
+~~~ 
 will remove the file to the staging area, but it remains on your working directory (it's not removed from your disk), while
-```shell
+~~~shell
 git rm <filename>
-``` 
+~~~ 
 removes the file also from the disk other then the staging area.
 
 
 ### Check the state
 To check what's the state of each file, run:
-```shell
+~~~shell
 git status
-``` 
+~~~ 
 
 
 ### Commit
 
 Now your new/modified files are on the stage. If you want to store these files into the repository, you have to commit the changes using
 
-```shell
+~~~shell
 git commit -m "commit message"
-``` 
+~~~ 
 
 You can also commit writing more complex messages using the default git editor.
 To do that, just do a 
-```shell
+~~~shell
 git commit
-``` 
+~~~ 
 The default git editor will appear. Type the message, save and exit to execute the commit.
 To change the default git editor just do:
 
-```shell
+~~~shell
 git config --global core.editor YOUR_EDITOR_NAME_HERE
-``` 
+~~~ 
 replacing YOUR_EDITOR_NAME_HERE with emacs, vim, nano or what you want.
 
 
 Now, if you want to view the history of your commits, do a:
-```shell
+~~~shell
 git log [--options]
-``` 
+~~~ 
 Some options are:
 
 * -p   which introduces the differences between each commit
@@ -91,82 +91,90 @@ You can tag a version in 2 ways: annotated or lightweight.
 ANNOTATED tags are stored in the Git database adding some informations.
 It's recommended to use this type of tag to store more information.
 
-```shell
+~~~shell
 git tag -a TAG [-m TAG_MESSAGE]
 # e.g. git tag -a v1.2 -m "some text here"
-``` 
+~~~ 
 replacing TAG with your tag (eg v1.2) without quotes or double quotes
 TAG_MESSAGE, instead, is a text message between double quotes "...".
 
 LIGHTWEIGHT tag are just a sort of pointer to a branch.
-```shell
+~~~shell
 git tag TAG-lw
 # for example, git tag v1.2-lw
-``` 
+~~~ 
 
 
 You can also tag later (a past branch). In this case the syntax is the following:
-```shell
+~~~shell
 git tag -a TAG COMMIT_HASH
-``` 
+~~~ 
 where COMMIT_HASH is the checksum (or a part of it) of the branch to tag.
 
 
 To view all tags (or a few using the search pattern):
-```shell
+~~~shell
 git tag -l [pattern]
-``` 
+~~~ 
 
 ## BRANCH
 
 ### Create branch and checkout
 
 To create a new branch:
-```shell
+~~~shell
 git branch NewBranchName
-```
+~~~
 
 
 After the creation of the new branch, we are still on the "old" branch, so we switch on the new with:
-```shell
+~~~shell
 git checkout NewBranchName
-``` 
+~~~ 
 
 There is also a shortucut to create a new branch and immediately move into it. We do that typing:
-```shell
+~~~shell
 git checkout -b NewBranchName
-``` 
+~~~ 
 where the -b option lets the checkout command to create the branch to switch on.
 
 ### List
 
 To view the list of all branches, add the -l option as usual.
-```shell
+
+~~~shell
 git branch -l
-``` 
+~~~ 
+
+There are also two useful options, `--merged` and '--no-merged`, that filter the list of branch to only those who are already merged or not into your current branch.
+
+~~~shell
+git branch --merged
+git branch --no-merged
+~~~ 
 
 ### Merge
 
 First, checkout to the branch A in which you want to merge the other branch B. Doing this, the modifications in file B are merged in branch A (B->A).
-```shell
+~~~shell
 git checkout MainBranchName
 
 git merge NewBranchName
-``` 
+~~~ 
 
 
 ### Delete
 
 
 After the merge operation, you maybe want to delete the branche merged. You can do this with command:
-```shell
+~~~shell
 git branch -d NewBranchName
-``` 
+~~~ 
 
 To force the deletion of a branch despite there are changes not merged, use the -D option (uppercase):
-```shell
+~~~shell
 git branch -D NewBranchName
-``` 
+~~~ 
 
 ## STASH
 
@@ -220,27 +228,31 @@ e.g. git stash drop stash@{0}
 After the commits, you probably want to update the remote repository with your new changes.
 
 To upload the changes to the "master" branch on the "origin" repository:
-```shell
+~~~shell
 git push origin master
-``` 
+~~~ 
 
 ### Fetch
 
 To get all the data from a remote repository that you haven't on local, you can do a fetch instruction.
 It's important to note that Fetch instruction doesn't merge nothing and doesn't modify nothing you're working on, only downloads the data you haven'r yet.
 
-```shell
+~~~shell
 git fetch remoteName
-``` 
+~~~ 
 
 ### Pull
 
-The Pull instruction has the effect of the Fetch, but it tries to merge the remote data with the local data of the branch you're currently working on.
+
+
+The *Pull* command is similar to *Fetch*, but it merges the remote data with the local data of the branch you're currently working on.
 Pull fetches and merges data only for the current branch you're on, it doesn't afflict the other branches.
 
-```shell
+** Note that your branch must be set up to track a remote branch to run the Pull command. By default the Clone command sets up only the master branch **
+
+~~~shell
 git pull
-``` 
+~~~ 
 
 If there is no tracking information for the current branch you are on, you have to specify which branch you want to merge with.
 You can do it adding the remote and branch names.
@@ -254,51 +266,102 @@ git pull <remote> <branch>>
 To delete a remote branch, you can do in 2 ways:
 
 - from Git 1.5:
-```shell
+~~~shell
 git push origin :remoteBranchName
-``` 
+~~~ 
 
 from Git 1.7:
-```shell
+~~~shell
 git push origin --delete remoteBranchName
-``` 
+~~~ 
 
 ### Difference local/remote branches
 
 To view the differences between a local branch and the corresponding remote branch, you have first do execute a Fetch instruction, then Diff:
-```shell
+~~~shell
 git diff localBranchName remoteName/remotBranchName
-``` 
+~~~ 
 
 ### Managing remotes
 
 You can add a remote repository other than the "origin" just doing:
 
-```shell
+~~~shell
 git remote add remoteName URLofRepo
 #e.g. git remote add github_remote https://github.com/MarcoMengoli/MorseCodeEmitter_RPi_Py
-``` 
+~~~ 
 Now you can do a push/fetch to/from this repository.
 
 
 To view the list of your remotes:
-```shell
+~~~shell
 git remote -v
-``` 
+~~~ 
 
 To inspect the content of a remote, knowing the branch available on the remote and local branch configured for pull or push, do:
-```shell
+~~~shell
 git remote show remoteName
 #e.g. git remote show origin
-``` 
+~~~ 
 
 To remove a remote:
-```shell
+~~~shell
 git remote rm remoteName
-``` 
+~~~ 
 
 To rename a remote:
-```shell
+~~~shell
 git remote rename oldRemoteName newRemoteName
-``` 
+~~~ 
+
+
+## GIT CONFIG
+
+### Show current settings
+
+To view all your current Git settings, run:
+
+~~~ shell
+git config --list
+~~~
+
+To view a specific setting, run:
+
+~~~ shell
+git config <setting-name>
+e.g. git config user.name
+~~~
+
+### Git credential cache
+
+Sometimes it happens you have to enter your Git credentials frequently. It can become a boring thing.
+
+The credential cache can give you a help. You can impose a timeout time in which you credentials remain memorized into the system. 
+You can do it running:
+
+~~~ shell
+git config credential.helper 'cache --timeout=nsecs'
+~~~
+where nsecs is the timeout value in seconds.
+
+
+### User name and email
+
+It's important to set user information like name and email address because Git uses these informations on storing commits, and those commits are immutable.
+
+To set user name and email address run:
+
+~~~ shell
+git config --global user.name "Your name"
+git config --global user.email your@email.com
+~~~
+
+### Text editor
+
+One useful thing you can set is the text editor that Git will offer you to type a message.
+Git uses your current system's editor. To chose a different one run:
+
+~~~ shell
+git config --global core.editor <editor-name>
+~~~
 
