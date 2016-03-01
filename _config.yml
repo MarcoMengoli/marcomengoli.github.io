@@ -9,15 +9,15 @@ logo:             images/logo.png
 # url: http://aronbordin.com/neo-hpstr-jekyll-theme
 
 menu:
-  - title: 'Home'
+  - title: 'Blog home'
     url: '/'
-  - title: 'About'
-    url: '/about'
   - title: 'Tags'
     url: '/tags'
   - title: 'Categories'
     url: '/categories'
     type: 'categories'
+  - title: 'About'
+    url: '/about'
 #  - title: 'Favorites'
 #    url: '#'
 #    submenu:
@@ -29,7 +29,7 @@ menu:
 # Owner/author information
 owner:
   name:           Marco Mengoli
-  site:           http://marcomengoli.github.io/
+  site:           http://www.marcomengoli.com/
   avatar:         images/avatar.jpg
   bio:            "Software Engineering student at University of Bologna. 
   I love to solve problems and experiment new things. 
@@ -54,8 +54,6 @@ social:
     url: "https://github.com/MarcoMengoli"
   - title: "linkedin"
     url: "https://br.linkedin.com/in/"
-  - title: "youtube"
-    url: "https://www.youtube.com/channel/"
 # Background image to be tiled on all pages
 background:
 
