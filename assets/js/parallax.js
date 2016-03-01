@@ -18,8 +18,9 @@ function setJumbotronHeight()
 {
 	var textHeight = $('div[id="page-title"]').height();
 	var socialBar = $('div[id="social-bar"]').height();
+	var goDown = $('div[id="go-down"]').height();
     
-    var padding_tb = ($window.height() - textHeight - socialBar )// / 2 + 1;
+    var padding_tb = ($window.height() - textHeight - socialBar - goDown)// / 2 + 1;
     $('div[id="page-title"]').css({ paddingTop: padding_tb*0.40 });
     $('div[id="page-title"]').css({ paddingBottom: padding_tb*0.60 });
 }

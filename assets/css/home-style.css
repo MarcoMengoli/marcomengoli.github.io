@@ -47,6 +47,13 @@ body {
     }
 }
 
+
+#go-down a {
+    font-size: 30px;
+    color: #f4511e;
+    color: #ffffff;
+}
+
 #intro { 
 	background: url(../../images/bg.jpg) 50% 0 fixed no-repeat;
 	-webkit-background-size: cover;
