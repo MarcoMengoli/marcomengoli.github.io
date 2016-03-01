@@ -50,10 +50,14 @@ owner:
   google_plus:    +Marco Mengoli
 
 social:
+  - title: "facebook"
+    url: "https://www.facebook.com/MengoliMarco"
+  - title: "linkedin"
+    url: "https://it.linkedin.com/in/marco-mengoli-165abaa4"
   - title: "github"
     url: "https://github.com/MarcoMengoli"
-  - title: "linkedin"
-    url: "https://br.linkedin.com/in/"
+  - title: "google-plus"
+    url: "https://plus.google.com/112417882593672627749/posts"
 # Background image to be tiled on all pages
 background:
 
