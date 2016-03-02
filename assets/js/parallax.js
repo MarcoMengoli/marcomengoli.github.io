@@ -29,12 +29,30 @@ $(document).ready(function()
 {
    // cache the window object
 	   $window = $(window);
+     var scrollTime = 1.0;
+     var scrollDistance = 170;
 
 	   setJumbotronHeight();
 	   window.onresize = function(event)
 	   {
 	   		setJumbotronHeight();
 	   };
+
+     $window.on("mousewheel DOMMouseScroll", function(event){
+
+      		event.preventDefault();
+
+      		var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
+      		var scrollTop = $window.scrollTop();
+      		var finalScroll = scrollTop - parseInt(delta*scrollDistance);
+
+      		TweenMax.to($window, scrollTime, {
+      			scrollTo : { y: finalScroll, autoKill:true },
+      				ease: Power1.easeOut,
+      				overwrite: 5
+      			});
+
+      	});
 
 	   $('div[data-type="background"]').each(function()
 	   {
@@ -48,7 +66,7 @@ $(document).ready(function()
 			 {
 				// HTML5 proves useful for helping with creating JS functions!
 				// also, negative value because we're scrolling upwards
-				
+
 				var res = isScrolledIntoView($element_scrolls);
 				if ( res == true )
 				{
