@@ -1,28 +1,40 @@
-
-
-#go-down a {
-    font-size: 30px;
-    color: #f4511e;
-    color: #ffffff;
-}
-
 #intro {
 	background: url(../../images/bg.jpg) 50% 0 fixed no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 
 #engineer {
 	background: url(../../images/eng7.jpg) 50% 0 fixed no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 #maker {
 	background: url(../../images/iot5.jpg) 50% 0 fixed no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 #projects {
 	background: url(../../images/dicam3.jpg) 50% 0 fixed no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 #work {
 	background: url(../../images/work3.jpg) 50% 0 fixed no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }

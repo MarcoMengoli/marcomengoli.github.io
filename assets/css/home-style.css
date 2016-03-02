@@ -1,4 +1,4 @@
-html { 
+html {
 
 }
 
@@ -6,10 +6,10 @@ body {
     font: 400 15px Lato, sans-serif;
     line-height: 1.8;
     color: #818181;
-    
+
     background-color: #ffffff;
     /*
-    background: url(images/bg1.jpg) no-repeat center center fixed; 
+    background: url(images/bg1.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -17,7 +17,7 @@ body {
 	background-size: 100% auto;
 	*/
 	z-index:0;
-	
+
 	font-size: 22px;
 }
 
@@ -29,9 +29,9 @@ body {
     text-shadow: #444 0 1px 1px;
  	background:transparent;
  	text-align:center;
- 	
-	margin: 0 auto; 
-	
+
+	margin: 0 auto;
+
 	padding-bottom: 0px;
 	padding-top: 0px;
 }
@@ -54,47 +54,6 @@ body {
     color: #ffffff;
 }
 
-#intro { 
-	background: url(../../images/bg.jpg) 50% 0 fixed no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-
-#engineer { 
-	background: url(../../images/eng7.jpg) 50% 0 fixed no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-#maker { 
-	background: url(../../images/iot5.jpg) 50% 0 fixed no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-#projects { 
-	background: url(../../images/dicam3.jpg) 50% 0 fixed no-repeat; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-#work { 
-	background: url(../../images/work3.jpg) 50% 0 fixed no-repeat; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
 #footer {
 	background: url(../../images/bg.jpg) 50% 0 fixed no-repeat;
 	background-position:  0px 80px;
@@ -102,7 +61,7 @@ body {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	
+
 	color:#ffffff;
 	padding: 50px 0px;
 }
@@ -115,7 +74,7 @@ body {
     text-shadow: #444 0 1px 1px;
  	background:transparent;
  	text-align:center;
- 	
+
 	margin: 0 auto;
 	z-index:-2;
 }
@@ -256,8 +215,5 @@ footer .glyphicon {
     font-size: 30px;
     margin-bottom: 30px;
     color: #f4511e;
-    
+
 }
-
-
-
