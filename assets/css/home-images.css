@@ -1,0 +1,28 @@
+
+
+#go-down a {
+    font-size: 30px;
+    color: #f4511e;
+    color: #ffffff;
+}
+
+#intro {
+	background: url(../../images/bg.jpg) 50% 0 fixed no-repeat;
+}
+
+
+#engineer {
+	background: url(../../images/eng7.jpg) 50% 0 fixed no-repeat;
+}
+
+#maker {
+	background: url(../../images/iot5.jpg) 50% 0 fixed no-repeat;
+}
+
+#projects {
+	background: url(../../images/dicam3.jpg) 50% 0 fixed no-repeat;
+}
+
+#work {
+	background: url(../../images/work3.jpg) 50% 0 fixed no-repeat;
+}
