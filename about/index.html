@@ -8,7 +8,17 @@
 	<meta name="description" content="Marco Mengoli website">
 	<meta name="author" content="Marco Mengoli">
 
-	<link rel="stylesheet" href="../assets/css/home-images.css">
+	<script type="text/javascript">
+	if( /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		// ON MOBILE DEVICE
+		document.write('<link rel="stylesheet" href="../assets/css/home-images-mobile.css">');
+	}
+	else
+	{
+		document.write('<link rel="stylesheet" href="../assets/css/home-images.css">');
+	}
+	</script>
+
 
 	<link rel="stylesheet" href="../assets/css/font-awesome.css">
 
@@ -66,24 +76,31 @@
 	<br>
 	-->
 
-	<div class="row image-list ">
-		<div class="col-sm-3">
-			<!-- <span class="fa fa-star-o logo-small"></span> -->
-			<span class="fa fa-heart-o logo-small"></span>
-			<p>Since I was a child, I love to <strong>solve problems</strong>. It makes me feel good to <strong>observe</strong> and <strong>find</strong> original <strong>solutions</strong></p>
-
+	<div class="row image-list">
+		<div class="col-sm-3 col-xs-6">
+			<div class="thumbnail">
+				<!-- <span class="fa fa-star-o logo-small"></span> -->
+				<span class="fa fa-heart-o logo-small"></span>
+				<p>Since I was a child, I love to <strong>solve problems</strong>. </p>
+			</div>
 		</div>
-		<div class="col-sm-3">
-			<span class="fa fa-gears logo-small"></span>
-			<p>I'm very curious to understand <strong>how</strong> things work, in any field of application</p>
+		<div class="col-sm-3 col-xs-6">
+			<div class="thumbnail">
+				<span class="fa fa-gears logo-small"></span>
+				<p>I'm very curious to understand <strong>how</strong> things work, in any field of application</p>
+			</div>
 		</div>
-		<div class="col-sm-3">
-			<span class="fa fa-magic logo-small"></span>
-			<p>I really like to experiment <strong>new things</strong> and implement do-it-yourself projects</p>
+		<div class="col-sm-3 col-xs-6">
+			<div class="thumbnail">
+				<span class="fa fa-magic logo-small"></span>
+				<p>I really like to experiment <strong>new things</strong> and implement do-it-yourself projects</p>
+			</div>
 		</div>
-		<div class="col-sm-3">
-			<span class="fa fa-rocket logo-small"></span>
-			<p>I like to <strong>learn</strong> new things and <strong>improve</strong> my <strong>skills</strong></p>
+		<div class="col-sm-3 col-xs-6">
+			<div class="thumbnail">
+				<span class="fa fa-rocket logo-small"></span>
+				<p>I like to <strong>learn</strong> new things and <strong>improve</strong> my <strong>skills</strong></p>
+			</div>
 		</div>
 		<!--
 		<div class="col-sm-3">
@@ -129,29 +146,27 @@ ENGINEER
 	</div>
 
 	<div class="row image-list">
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-xs-6">
 			<span class="fa fa-code logo-small"></span>
 			<h4>CODE</h4>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-xs-6">
 			<span class="fa fa-database logo-small"></span>
 			<h4>DATABASE</h4>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-xs-6">
 			<span class="fa fa-globe logo-small"></span>
 			<h4>WEB</h4>
 		</div>
-	</div>
-	<div class="row image-list">
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-xs-6">
 			<span class="fa fa-git logo-small"></span>
 			<h4>GIT</h4>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-xs-6">
 			<span class="fa fa-linux logo-small"></span>
 			<h4>LINUX</h4>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-xs-6">
 			<span class="glyphicon glyphicon-transfer logo-small"></span>
 			<h4>NETWORKS</h4>
 		</div>
@@ -179,28 +194,28 @@ MAKER
 	</div>
 
 	<div class="row text-center">
-		<div class="col-sm-3">
+		<div class="col-sm-3 col-xs-6">
 			<div class="thumbnail">
 				<img src="../images/arduino.jpg" alt="Arduino">
 				<h4>Arduino</h4>
-				<p>An open-source shield based on Atmel AVR microcontroller </p>
+				<p>An open-source shield based on Atmel AVR microcontroller</p>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-3 col-xs-6">
 			<div class="thumbnail">
 				<img src="../images/raspberry.jpg" alt="Raspberry Pi">
 				<h4>Raspberry Pi</h4>
 				<p>A low cost, credit-card sized computer, provided with Linux-based distributions</p>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-3 col-xs-6">
 			<div class="thumbnail">
 				<img src="../images/esp8266.jpg" alt="ESP8266">
 				<h4>ESP8266</h4>
 				<p>A microcontroller with an integrated WiFi module</p>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-3 col-xs-6">
 			<div class="thumbnail">
 				<img src="../images/udoo.jpg" alt="UDOO">
 				<h4>UDOO</h4>
@@ -218,10 +233,10 @@ PROJECTS WITH DICAM
 <div class="container">
 	<div class="row">
 
-		<div class="col-sm-2">
+		<div class="col-md-2 col-sm-0">
 			<span class="fa fa-code-fork logo"></span>
 		</div>
-		<div class="col-sm-8">
+		<div class="col-md-8 col-sm-12">
 			<p>I’m very happy to collaborate with the DICAM department (Department of Civil, Chemical, Environmental, and Materials Engineering) building software to create a network of remote GPS sensors -made by a Raspberry Pi, a 3G dongle and a differential GPS antenna- to monitor critical areas from remote. I also work on a software to simulate GPS constellations with the aim to calculate the quality of satellite visibility in urban environments.</p>
 		</div>
 	</div>
