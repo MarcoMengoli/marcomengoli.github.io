@@ -7,23 +7,24 @@ tags: [Python, Excel]
 categories: [Programming Python]
 ---
 
-Python has a lot of very useful libraries, one of these is **openpyxl**, which gives you the possibility to work with Excel spreadsheets with semplicity.
+Python has a lot of powerful libraries. In this post we'll use **openpyxl**, which allows you to work easily with Excel spreadsheets.
 
-In this post we will use the Python2 version of the library. The version for Python3 is also available, and should also be compatible with this one.
+We will refer to the Python2 version of the library. It is also available for Python3 and should also be compatible with this one.
 
 The full project documentation is available [here](http://openpyxl.readthedocs.org/en/2.3.3/).
 
 The Excel formats currently supported by this module are:
 
 * .xlsx
-* .xlsm 
+* .xlsm
 * .xltx
 * .xltm
 
 ## Installing the library
 
-First of all, to install the *openpyxl* module, you have to check if in your system a Python package management system is installed. In this post we will use *pip*.
-It comes already installed if using Python 2 >= 2.7.9 or Python 3 >= 3.4. You can install *pip* in your Linux system running: 
+First of all, we need to install the *openpyxl* module, so make sure you have installed a Python package management system.
+
+Following we will use *pip*. It comes already installed if using Python 2 >= 2.7.9 or Python 3 >= 3.4. You can install *pip* in your Linux system running:
 
 ~~~shell
 sudo apt-get install pip
@@ -99,7 +100,7 @@ ws['D2'] = val
 After the modifications apported to the file, remember to save the file:
 
 ~~~python
-wb.save('aFileName.xlsm') 
+wb.save('aFileName.xlsm')
 ~~~
 
 Note that the file name used in *save()* function can be different to the file name used in *open()* function. In that case, it will create a new file, otherwise if the name is the same it will overwrite the old file.
@@ -116,7 +117,7 @@ from openpyxl.cell import get_column_letter, column_index_from_string
 
 colDIndex = column_index_from_string('D')
 colLetter = get_column_letter(colIndex)
-~~~	
+~~~
 
 
 ### Getting the max col and row used
@@ -127,7 +128,7 @@ To know these informations, you can use the functions:
 
 ~~~python
 maxRow= sheet.max_row
-maxCol= sheet.max_column 
+maxCol= sheet.max_column
 ~~~
 
 ## Full example
@@ -157,13 +158,11 @@ east = sheet["{0}{1}".format(excelEastCol, str(rowIndex))].value # (sheet["B1"].
 maxCol = sheet.max_column
 cell = get_column_letter(maxCol+1) + str(rowIndex)
 
-# or, eventually: 
+# or, eventually:
 # columnIndexToWrite = 3
 # cell = get_column_letter(columnIndexToWrite) + str(rowIndex)
-		
+
 sheet[cell] = valueToWrite
 
 wb.save("name.xlsx")
 ~~~
-
-
