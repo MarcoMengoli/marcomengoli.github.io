@@ -9,8 +9,12 @@ categories: [Computer vision]
 
 In this first post about computer vision, and in particular about the usage of **OpenCV** library, we will use the **Windows 7** operating system and the **Visual Studio 2012 IDE**.
 
+### Download and install
+
 First of all, we need to download and install the OpenCV library. You can find the already compiled packages
 [here](https://sourceforge.net/projects/opencvlibrary/files/opencv-win/). Once you have downloaded it, execute the file, selecting the path where to install the library.
+
+### Environment configurations
 
 Now we have to set the environment variables. In particular, we add the ~~~OPENCV_PATH~~~ variable with value:
 
@@ -26,6 +30,8 @@ If we want to use dynamic libraries (windows' DLL), we have to specify to the op
 ~~~shell
 %OPENCV_DIR%\bin
 ~~~
+
+### Visual Studio configurations
 
 After setting all environment variables, we are ready to launch VisualStudio. First of all, we create a new Win32 Application project.
 Once the project is created, we need to set the **include path** and the **additional libraries path**. Unfortunately we have to set these properties for each project. VisualStudio helps us to do quickly those things by creating a properties file the first time, save it and then load it for each project.
@@ -73,4 +79,4 @@ We can confirm the modifications and press the **save** icon.
 
 We need to do the same thing for the **Release** directory too, with the only difference that consists in omitting the **d** letter at the end of each **Additional Dependencies** library (**d** is only for debug).
 
-Doing there operations, we have created two properties files which we can load into every new project without specifying those properties every time.
+Doing these operations, we have created two properties files. We can load those files into every new project without specifying all the properties every time.
