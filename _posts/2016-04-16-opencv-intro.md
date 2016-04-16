@@ -54,8 +54,10 @@ $(OPENCV_PATH)\..\..\include
 Then `Linker -> General -> Additional Include Directories` and add
 
 ~~~shell
-$(OPENCV_PATH)\lib
+$(OPENCV_PATH)\staticlib
 ~~~
+
+Note: the official openCV guide reported to add the **lib** directory, not **staticlib**. However, doing that, it fails to compile because of the lack of the libraries. Looking into the **lib** folder, we cannot found those libraries indicated below, while we can found them in **staticlib**.
 
 Finally, `Linker -> Input -> Additional Dependencies` and add the libraries you want to import, for example:
 
@@ -92,3 +94,5 @@ We can confirm the modifications and press the **save** icon.
 We need to do the same thing for the **Release** directory too, with the only difference that consists in omitting the **d** letter at the end of each **Additional Dependencies** library (**d** is only for debug).
 
 Doing these operations, we have created two properties files. We can load those files into every new project without specifying all the properties every time.
+
+Note: sometimes Visual Studio fails to compile although everything appears to be well configurated. Try to close and re-open the IDE: it will probably work again.
