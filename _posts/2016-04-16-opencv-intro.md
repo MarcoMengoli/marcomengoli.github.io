@@ -96,3 +96,6 @@ We need to do the same thing for the **Release** directory too, with the only di
 Doing these operations, we have created two properties files. We can load those files into every new project without specifying all the properties every time.
 
 Note: sometimes Visual Studio fails to compile although everything appears to be well configurated. Try to close and re-open the IDE: it will probably work again.
+
+#### Links
+Here are the links to download the [debug](https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/opencv/OPENCV_DEBUG_PropertySheet.props) and [release](https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/opencv/OPENCV_RELEASE_PropertySheet.props) property sheets for Visual Studio 2012.
