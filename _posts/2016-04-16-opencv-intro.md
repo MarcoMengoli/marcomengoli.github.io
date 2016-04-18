@@ -56,9 +56,7 @@ Then `Linker -> General -> Additional Include Directories` and add
 $(OPENCV)\build\x64\vc11\lib
 ~~~
 
-Note: the official openCV guide reported to add the **lib** directory, not **staticlib**. However, doing that, it fails to compile because of the lack of the libraries. Looking into the **lib** folder, we cannot found those libraries indicated below, while we can found them in **staticlib**.
-
-Finally, `Linker -> Input -> Additional Dependencies` and add the libraries you want to import, for example:
+Finally, `Linker -> Input -> Additional Dependencies` and add:
 
 ~~~shell
 opencv_world300d.lib
@@ -80,7 +78,7 @@ Only if your system is 64 bit, you need to do the last configuration.
 
 In the **Properties** windows, click the **Configuration Manager...** button.
 In the window that appears, click in the combobox under the **Platform** column, select the **<New...>**.
-In the **Copy settings from** combobox, select **x64**. Confirm everything and your project is configurated to work into a 64 bit system.
+In the **New platform** combobox, select **x64**. Confirm everything and your project is configurated to work into a 64 bit system.
 
 *Note: this setting is to do for every project, since it's not possible to save it into the Property Sheet.
 
