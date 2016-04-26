@@ -1,7 +1,7 @@
 ---
 layout: post
-title: OpenCV3: the Mat object
-description: "OpenCV3: the Mat object"
+title: OpenCV 3, the Mat object
+description: "OpenCV 3: the Mat object"
 modified: 2016-04-20
 tags: [OpenCV, C++, code, Computer Vision]
 categories: [Computer vision]
@@ -45,6 +45,8 @@ You can also avoid prepending the namespace with the `using namespace` directive
 using namespace cv;
 ~~~
 
+We will choose the second way.
+
 ## Creating the Mat object
 
 #### Sharing the same data
@@ -79,6 +81,7 @@ A.copyTo(C);
 To initialize a Mat object filling its values directly from an image saved into the memory, you can use the **imread** function.
 
 The function **imread(String & filename, int flags = IMREAD_COLOR)** has two parameters:
+
 * the name of the image file to load and file
 * the image mode (the default is IMREAD_COLOR), for example:
 
@@ -116,7 +119,7 @@ CV_64FC4  -  64 bits per channel, float , 4 channels per cell
 CV_64FC(n)-  64 bits per channel, float , n channels per cell
 ~~~
 
-The **Scalar** type s is an optional *4 element short vector* value to initialize each matrix element with.
+The **Scalar** type s is an optional **4 element short vector** value to initialize each matrix element with.
 
 *The type Scalar is widely used in OpenCV to pass pixel values*.
 
@@ -186,6 +189,12 @@ It can be very tricky, so you can use the **Point** object to avoid sneaky error
 
 ~~~c
 Scalar intensity = matrix.at<uchar>(Point(x, y));
+~~~
+
+You can also use this notation to change the value of a pixel:
+
+~~~c
+matrix.at<uchar>(Point(x, y)) = 0;  // setting the pixel (x,y) to 0
 ~~~
 
 On a 3 channel image, the way to access to each pixel and to the 3 values of each pixel (one per channel) is the following:
