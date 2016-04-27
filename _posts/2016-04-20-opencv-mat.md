@@ -217,6 +217,16 @@ float green = intensity.val[1];
 float red = intensity.val[2];
 ~~~
 
+#### Splitting the RGB image
+
+OpenCV offers the `split()` function to split the 3-channels RGB image into 3 Mat objects, one per channel.
+The parameters are the Mat object containing the source image and the vector of Mat objects, representing each RGB channel **in reverse order, the first is Blue, then Green and Red**.
+
+~~~c
+vector<Mat> bgr_channels;
+split( image , bgr_channels );
+~~~
+
 
 ## Visualizing an image
 
