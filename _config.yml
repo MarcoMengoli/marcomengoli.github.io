@@ -9,7 +9,7 @@ logo:             images/logo.png
 # url: http://aronbordin.com/neo-hpstr-jekyll-theme
 
 menu:
-  - title: 'Blog home'
+  - title: 'Home'
     url: '/'
   - title: 'Tags'
     url: '/tags'
