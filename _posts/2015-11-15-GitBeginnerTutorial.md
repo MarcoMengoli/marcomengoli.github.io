@@ -312,10 +312,14 @@ git diff localBranchName remoteName/remotBranchName
 You can add a remote repository other than the "origin" just doing:
 
 ~~~shell
-git remote add remoteName URLofRepo
+git remote add -f remoteName URLofRepo
 #e.g. git remote add github_remote https://github.com/MarcoMengoli/MorseCodeEmitter_RPi_Py
 ~~~ 
+
+`-f` is to fetch the remote branches 
+
 Now you can do a push/fetch to/from this repository.
+Common use case: you create a project in a directory and initialize a Git repository here with `git init`. Now you create a remote repository on you favorite Git server. How to merge these two repositories? Simply doing a `git remote add -f origin remote_repo_url`.
 
 
 To view the list of your remotes:
