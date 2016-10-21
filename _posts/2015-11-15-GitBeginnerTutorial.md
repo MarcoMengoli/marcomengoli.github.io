@@ -412,7 +412,7 @@ Let's look at the example: we have not to write this very long `git log ...` com
 
 ##### Aliases to print the branches tree I recommend to add
 
-I recommend to add the aliases you can find on [Slipp D. Thompson's answer on StackOverflow](https://progit.org/).
+I recommend to add the aliases you can find on [Slipp D. Thompson's answer on StackOverflow](http://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git/34467298#34467298).
 
 To add them, just do:
 
