@@ -398,3 +398,34 @@ Git uses your current system's editor. To chose a different one run:
 git config --global core.editor <editor-name>
 ~~~
 
+### Alias
+
+An alias in git is... an alias: you can map a git command with a name, so you have not to enter the (maybe) long command string but only `git aliasName`.
+To add an alias to Git, you have to do the following:
+
+~~~ shell
+git config --global alias.AliasName "your git command here"
+#example: git config --global alias.BranchTree "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+~~~
+
+Let's look at the example: we have not to write this very long `git log ...` command, but only `git BranchTree`.
+
+##### Aliases to print the branches tree I recommend to add
+
+I recommend to add the aliases you can find on [Slipp D. Thompson's answer on StackOverflow](https://progit.org/).
+
+To add them, just do:
+
+~~~ shell
+git config --global alias.branchtree1 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+git config --global alias.branchtree2 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+git config --global alias.branchtree3 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)' --all"
+~~~
+
+After you have done that, you can simply call these Git commands in the same way of another built-in Git command:
+
+~~~ shell
+git branchtree1
+git branchtree2
+git branchtree3
+~~~
