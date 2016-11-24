@@ -1,6 +1,6 @@
 code {
 	#margin-bottom: 1.5em;
-	@include font(12);
+	font-size: 0.95em;
 	//color: #043f51;
 	//background-color: #11134B;
 	
@@ -9,8 +9,7 @@ code {
 	@include rounded(5px);
 	
 	margin: 0;
-	padding: 0;
-	#padding: 0.8em;
+	padding: 2px 4px;
 	#display: block;
 	
 	.lineno { padding-right: 12px; color: #8f908a;}
@@ -21,7 +20,7 @@ code {
 	.c { color: #aba2e1 } /* Comment */
 	.k { color: #0980a3 } /* Keyword */
 	.l { color: #ae81ff } /* Literal */
-	.n { color: #8f6f2f } /* Name */
+	.n { color: #054A5F } /* Name */
 	.o { color: #606060 } /* Operator */
 	.p { color: #606060 } /* Punctuation */
 	.m { color: #cf432a } /* Literal.Number */
