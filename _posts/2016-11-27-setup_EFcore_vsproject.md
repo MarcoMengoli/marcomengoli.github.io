@@ -7,8 +7,6 @@ tags: [.NET core, Entity Framework Core, Visual Studio]
 categories: [.NET core]
 ---
 
-# Setting up the Entity Framework Core in a Visual Studio Project
-
 Entity Framework Core is the brand new ORM framework that allows a .NET Core developer to work with a database without worrying about writing data-access code and mapping the object model with the relational model.
 
 It has also some features that makes it more than a simple ORM: with EF Core , a developer can generate the relational model given the object model, or viceversa.
