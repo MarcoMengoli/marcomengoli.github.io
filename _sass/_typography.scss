@@ -111,7 +111,7 @@ li {
 }
 pre {
 	code {
-		font-size: 0.95em;	
+		font-size: 0.80em;	
 	}
 	//@include font-rem(12);
 	//line-height: 1.5;
@@ -126,7 +126,7 @@ pre {
 		@include rounded(4px);
 	}
 	
-	background-color: #f4f8f9;
+	background-color: #f2f2f2;
 	padding: 0.2em;
 	padding-left: 1.0em;
 	overflow-x: auto;
