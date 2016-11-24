@@ -109,14 +109,14 @@ To do so, open the *SQL Server Object Explorer* tab in Visual Studio, expand the
 Expand it, go into the *Tables* folder and you can find the `dbo.Students` table! 
 
 <figure class="half center">
-	<img src="https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/databaseView.PNG" alt="DatabaseView">
+	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/databaseView.PNG" alt="DatabaseView">
 	<figcaption><title="Students table view">Database view</figcaption>
 </figure>
 
 Double clicking on the `dbo.Students` table it will open the *Design window*. Here you can see the table structure and the *SQL* commands that created it.
 
 <figure class="half center">
-	<img src="https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable.PNG" alt="Students Table View">
+	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable.PNG" alt="Students Table View">
 	<figcaption><title="Students table view">Students table view</figcaption>
 </figure>
 
@@ -205,12 +205,12 @@ Update-Database
 ~~~
 
 <figure class="half center">
-	<img src="https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable_afterClassesMigration.PNG" alt="Students Table View After ClassesMigration">
+	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable_afterClassesMigration.PNG" alt="Students Table View After ClassesMigration">
 	<figcaption><title="Students table view">Students table view after the Classes Migration</figcaption>
 </figure>
 
 <figure class="half center">
-	<img src="https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/classessTable.PNG" alt="Classes Table View">
+	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/classessTable.PNG" alt="Classes Table View">
 	<figcaption><title="Students table view">Students table view</figcaption>
 </figure>
 
