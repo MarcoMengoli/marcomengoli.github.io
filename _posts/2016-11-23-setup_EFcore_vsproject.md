@@ -2,7 +2,7 @@
 layout: post
 title: Setting up the Entity Framework Core in a Visual Studio Project
 description: "Setting up the Entity Framework Core in a Visual Studio Project"
-modified: 2016-04-24
+modified: 2016-04-23
 tags: [.NET core, Entity Framework Core, Visual Studio]
 categories: [.NET core]
 ---
