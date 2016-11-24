@@ -115,7 +115,7 @@ Expand it, go into the *Tables* folder and you can find the `dbo.Students` table
 
 Double clicking on the `dbo.Students` table it will open the *Design window*. Here you can see the table structure and the *SQL* commands that created it.
 
-<figure class="half center">
+<figure>
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable.PNG" alt="Students Table View">
 	<figcaption title="Students table view">Students table view</figcaption>
 </figure>
@@ -204,12 +204,12 @@ Now we can apply these changes to the database running:
 Update-Database
 ~~~
 
-<figure class="half center">
+<figure>
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable_afterClassesMigration.PNG" alt="Students Table View After ClassesMigration">
 	<figcaption title="Students table view">Students table view after the Classes Migration</figcaption>
 </figure>
 
-<figure class="half center">
+<figure>
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/classessTable.PNG" alt="Classes Table View">
 	<figcaption title="Students table view">Students table view</figcaption>
 </figure>
