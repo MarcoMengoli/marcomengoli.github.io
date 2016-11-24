@@ -110,14 +110,14 @@ Expand it, go into the *Tables* folder and you can find the `dbo.Students` table
 
 <figure class="half center">
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/databaseView.PNG" alt="DatabaseView">
-	<figcaption><title="Students table view">Database view</figcaption>
+	<figcaption title="Students table view">Database view</figcaption>
 </figure>
 
 Double clicking on the `dbo.Students` table it will open the *Design window*. Here you can see the table structure and the *SQL* commands that created it.
 
 <figure class="half center">
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable.PNG" alt="Students Table View">
-	<figcaption><title="Students table view">Students table view</figcaption>
+	<figcaption title="Students table view">Students table view</figcaption>
 </figure>
 
 Well done! We have generated the relational database from our class model!
@@ -206,12 +206,12 @@ Update-Database
 
 <figure class="half center">
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable_afterClassesMigration.PNG" alt="Students Table View After ClassesMigration">
-	<figcaption><title="Students table view">Students table view after the Classes Migration</figcaption>
+	<figcaption title="Students table view">Students table view after the Classes Migration</figcaption>
 </figure>
 
 <figure class="half center">
 	<img src="https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/classessTable.PNG" alt="Classes Table View">
-	<figcaption><title="Students table view">Students table view</figcaption>
+	<figcaption title="Students table view">Students table view</figcaption>
 </figure>
 
 As you can see, EF automatically infers the 1:N relation between **Students** and **Classes** and generates the foreign key in the **Students** table. *That's very elegant*!
