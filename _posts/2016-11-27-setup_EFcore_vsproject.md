@@ -9,9 +9,15 @@ categories: [.NET core]
 
 # Setting up the Entity Framework Core in a Visual Studio Project
 
+Entity Framework Core is the brand new ORM framework that allows a .NET Core developer to work with a database without worrying about writing data-access code and mapping the object model with the relational model.
+
+It has also some features that makes it more than a simple ORM: with EF Core , a developer can generate the relational model given the object model, or viceversa.
+
+For an overview of the framework, see the [MSDN documentation page](https://msdn.microsoft.com/en-gb/library/bb399567(v=vs.110).aspx).
+
 ## Setup EF Core on VS for code-first approach
 
-With the *code-first* approach, once you have generated the *Model* following certain conditions, you will be able to automatically generate the entire database and map the model classes with the generated relational tables.
+With the *code-first* approach, once you have generated the *Model* following certain [conventions](https://msdn.microsoft.com/en-us/library/jj679962(v=vs.113).aspx), you will be able to automatically generate the entire database and map the model classes with the generated relational tables.
 
 To use the *EF Core* with this approach, we need to install the packages which provide the EF commands and the database provider (in this example we will use *SqlServer*). 
 We can procede using the Nuget *Package Manager Console*, but we can use also the NuGet GUI window.
@@ -34,11 +40,13 @@ There are 2 possible solutions:
 
 In this case, I prefer to mantain the LTS version of .NET Core framework (1.0.1), so I'm going to install an 'old' version of the `Microsoft.EntityFrameworkCore.SqlServer` package.
 
-Looking at its NuGet page (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/1.1.0), in the *Version History* section, I can see all its versions.
+Looking at [its NuGet page](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/1.1.0), in the *Version History* section, I can see all its versions.
 Clicking on one version, its detailed page will be shown, so I can check the version required for each dependency.
 
 Once I have finished to check the dependencies, I have found that the version 1.0.1 of the `Microsoft.EntityFrameworkCore.SqlServer` is the latest compatible, so I choose to install it.
+
 To do so, I have to run on the Nuget Package Manager Console: `Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 1.0.1`
+
 After a few seconds (once the *Restoring packages* label on the top of *Solution Explorer* tab fades away), the package is installed in the selected project (the one selected in the *Default project* comboBox in the *Package Manager Console* tab).
 
 Now, let's do the same operations also for `Microsoft.EntityFrameworkCore.Tools` and  `Microsoft.EntityFrameworkCore.Design` packages.
