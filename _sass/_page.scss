@@ -565,9 +565,10 @@ ul.social-buttons li a:active {
 	min-height: 300px;
 	overflow: hidden;
 	//background-color: $header-color;
-	background-color: $prominent-darker-2-color;
+	//background-color: $prominent-darker-2-color;
 	//background-image: url("/images/header_pattern.jpg");
 	background-repeat: repeat;
+	background-repeat:#097fa2 linear-gradient(350deg, #008db3, #0fbe8d 120%) repeat scroll 0 0;
 }
 .header-toggle{
 	display: block;
@@ -738,8 +739,8 @@ ul.social-buttons li a:active {
 .header-menu-overflow .sub-item{
 	//background-color: $menu-top;
 	//background-image: url("/images/header_pattern.jpg");
-	//background-color: #0a8eb5;
-	background-color: linear-gradient(209deg,#0fbe8d,#008db3);
+	background-color: #0a8eb5;
+	//background: linear-gradient(209deg,#0fbe8d,#008db3);
 }
 
 .header-item,
