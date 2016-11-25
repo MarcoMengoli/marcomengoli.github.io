@@ -13,6 +13,7 @@ body {
 	@include clearfix;
 	h1, h2, h3, h4, h5, h6, p, li {
 		word-wrap: break-word;
+		font-weight: 400;
 	}
 	
 	h1, h1 > a {
