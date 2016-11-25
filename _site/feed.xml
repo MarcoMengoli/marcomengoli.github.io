@@ -1,0 +1,1607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">Marco Mengoli's Blog</title>
+<generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="/feed.xml" />
+<link rel="alternate" type="text/html" href="" />
+<updated>2016-11-26T00:54:54+01:00</updated>
+<id>/</id>
+<author>
+  <name>Marco Mengoli</name>
+  <uri>/</uri>
+  <email>marco.mengoli4@yahoo.it</email>
+</author>
+
+
+<entry>
+  <title type="html"><![CDATA[Creating a simple model and generate the database with EF Core 1.0]]></title>
+ <link rel="alternate" type="text/html" href="/.net%20core/EFCore_createSimpleModel_codeFirst/" />
+  <id>/.net%20core/EFCore_createSimpleModel_codeFirst</id>
+  <updated>2016-04-24T00:00:00-00:00</updated>
+  <published>2016-11-24T00:00:00+01:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Create a &lt;strong&gt;ASP.NET Core Web Application (.NET Core)&lt;/strong&gt; project and select the template &lt;strong&gt;Web Application&lt;/strong&gt;.
+In this example I will create a simple Web Application to model a simple school. I will call the project &lt;em&gt;SchoolWebApp&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Install the packages for &lt;em&gt;EF Core tools&lt;/em&gt; and &lt;em&gt;SqlServer provider&lt;/em&gt; as seen in the &lt;a href=&quot;http://marcomengoli.github.io/.net%20core/setup_EFcore_vsproject/&quot;&gt;previous post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;create-the-model&quot;&gt;Create the model&lt;/h3&gt;
+
+&lt;p&gt;Create a &lt;em&gt;Model&lt;/em&gt; folder. Inside this folder, create a &lt;code class=&quot;highlighter-rouge&quot;&gt;Student.cs&lt;/code&gt; file and will insert the following properties:&lt;/p&gt;
+
+&lt;p&gt;~~~ c#
+public int StudentID { get; set; }
+public String Name { get; set; }
+public String Surname { get; set; }
+~~~&lt;/p&gt;
+
+&lt;p&gt;Every property of the class will be mapped as a column with the same name in the &lt;code class=&quot;highlighter-rouge&quot;&gt;Student&lt;/code&gt; table (which will be automatically generated).&lt;/p&gt;
+
+&lt;p&gt;Code First infers that a property is a primary key if it’s named one of the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Class name followed by “Id”.&lt;/li&gt;
+  &lt;li&gt;“Id”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;create-the-context&quot;&gt;Create the context&lt;/h3&gt;
+
+&lt;p&gt;To generate the database table, it’s not sufficient to create the &lt;code class=&quot;highlighter-rouge&quot;&gt;Student&lt;/code&gt; class. We also need to create a DbContext containing a DbSet class (exposing it as a property) of type &lt;code class=&quot;highlighter-rouge&quot;&gt;Student&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Doing this, EF will generate a table named &lt;em&gt;Students&lt;/em&gt; (class name + “s”) and a table for each type referenced by the Student class (in this case nothing).&lt;/p&gt;
+
+&lt;p&gt;Let’s create a &lt;em&gt;Persistence&lt;/em&gt; folder in the project root and create inside it a &lt;code class=&quot;highlighter-rouge&quot;&gt;SchoolContext.cs&lt;/code&gt; file. This file will contain the &lt;code class=&quot;highlighter-rouge&quot;&gt;SchoolContext&lt;/code&gt;, which extends the &lt;code class=&quot;highlighter-rouge&quot;&gt;DbContext&lt;/code&gt; class.&lt;/p&gt;
+
+&lt;p&gt;This class will allow us to generate the database in an automatic way.&lt;/p&gt;
+
+&lt;p&gt;Add the following constructor and property to the class:&lt;/p&gt;
+
+&lt;p&gt;~~~ c#
+public SchoolContext(DbContextOptions&lt;schoolcontext&gt; options) : base(options) { }&lt;/schoolcontext&gt;&lt;/p&gt;
+
+&lt;p&gt;public DbSet&lt;student&gt; Students { get; set; }
+~~~&lt;/student&gt;&lt;/p&gt;
+
+&lt;p&gt;Add also the &lt;code class=&quot;highlighter-rouge&quot;&gt;using Microsoft.EntityFrameworkCore;&lt;/code&gt; at the beginning of the file.&lt;/p&gt;
+
+&lt;h3 id=&quot;register-the-context-with-di&quot;&gt;Register the context with DI&lt;/h3&gt;
+
+&lt;p&gt;In order to use the SchoolContext in the our web application, we need to register it as a service.&lt;/p&gt;
+
+&lt;p&gt;The classes of the application (such as controllers) which requires the SchoolContext are provided by Dependency Injection through the class contructor.&lt;/p&gt;
+
+&lt;p&gt;Open the &lt;code class=&quot;highlighter-rouge&quot;&gt;Startup.cs&lt;/code&gt; class and add the following lines at the beginning of &lt;code class=&quot;highlighter-rouge&quot;&gt;ConfigureServices(IServiceCollection services)&lt;/code&gt; method.&lt;/p&gt;
+
+&lt;p&gt;~~~ c#
+var connectionString = @”Server=(localdb)\mssqllocaldb;Database=SchoolDatabase;Trusted_Connection=True;”;
+services.AddDbContext&lt;schoolcontext&gt;(options =&amp;gt; options.UseSqlServer(connectionString));
+~~~&lt;/schoolcontext&gt;&lt;/p&gt;
+
+&lt;p&gt;Add also the &lt;code class=&quot;highlighter-rouge&quot;&gt;using Microsoft.EntityFrameworkCore;&lt;/code&gt; at the beginning of the file.&lt;/p&gt;
+
+&lt;h3 id=&quot;generate-the-code-to-create-the-database-and-execute-it&quot;&gt;Generate the code to create the database and execute it&lt;/h3&gt;
+
+&lt;p&gt;We are finally ready to automatically generate the code, which once executed will create the database.&lt;/p&gt;
+
+&lt;p&gt;Open the &lt;code class=&quot;highlighter-rouge&quot;&gt;Package Manager Console&lt;/code&gt; and enter the command &lt;code class=&quot;highlighter-rouge&quot;&gt;Add-Migration&lt;/code&gt; followed by the name you want to give to this migration. For example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Add-Migration CreateStudentsMigration
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Let’s look at the project directory: a new &lt;strong&gt;Migration&lt;/strong&gt; folder has been generated.&lt;/p&gt;
+
+&lt;p&gt;It contains 2 classes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;20161124115014_CreateStudentsMigration.cs&lt;/li&gt;
+  &lt;li&gt;SchoolContextModelSnapshot.cs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Analyze the content of the first file.
+It contains a class &lt;code class=&quot;highlighter-rouge&quot;&gt;CreateStudentsMigration&lt;/code&gt; (the name is the same of the one entered as argument of &lt;code class=&quot;highlighter-rouge&quot;&gt;Add-Migration&lt;/code&gt; command), which has 2 methods:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Up&lt;/li&gt;
+  &lt;li&gt;Down&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Up&lt;/code&gt; method is responsible of the creation of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Students&lt;/code&gt; table in the database. It creates the table, the columns and the contraints inferred by the class model.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Down&lt;/code&gt; method is responsible to delete the table once it’s not longer needed.&lt;/p&gt;
+
+&lt;p&gt;Now it’s time to generate the database. With EF core is a very simple operation, you only have to run the&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Update-Database
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;command to apply the migration.&lt;/p&gt;
+
+&lt;h3 id=&quot;view-the-created-database&quot;&gt;View the created database&lt;/h3&gt;
+
+&lt;p&gt;Of course, we are very interested in viewing the created database.&lt;/p&gt;
+
+&lt;p&gt;To do so, open the &lt;em&gt;SQL Server Object Explorer&lt;/em&gt; tab in Visual Studio, expand the &lt;code class=&quot;highlighter-rouge&quot;&gt;(localdb)\MSSQLLocalDB&lt;/code&gt; selection, &lt;em&gt;Database&lt;/em&gt; folder and… here’s our brand new &lt;code class=&quot;highlighter-rouge&quot;&gt;SchoolDatabase&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Expand it, go into the &lt;em&gt;Tables&lt;/em&gt; folder and you can find the &lt;code class=&quot;highlighter-rouge&quot;&gt;dbo.Students&lt;/code&gt; table!&lt;/p&gt;
+
+&lt;figure class=&quot;half center&quot;&gt;
+	&lt;img src=&quot;https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/databaseView.PNG&quot; alt=&quot;DatabaseView&quot; /&gt;
+	&lt;figcaption title=&quot;Students table view&quot;&gt;Database view&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Double clicking on the &lt;code class=&quot;highlighter-rouge&quot;&gt;dbo.Students&lt;/code&gt; table it will open the &lt;em&gt;Design window&lt;/em&gt;. Here you can see the table structure and the &lt;em&gt;SQL&lt;/em&gt; commands that created it.&lt;/p&gt;
+
+&lt;figure&gt;
+	&lt;img src=&quot;https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable.PNG&quot; alt=&quot;Students Table View&quot; /&gt;
+	&lt;figcaption title=&quot;Students table view&quot;&gt;Students table view&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Well done! We have generated the relational database from our class model!&lt;/p&gt;
+
+&lt;h3 id=&quot;adding-a-class-to-the-model&quot;&gt;Adding a class to the model&lt;/h3&gt;
+
+&lt;p&gt;In the real world, a student belongs to a class. The class is characterized by a name, a room used for the lecture and, of course, by a set of students.
+Let’s add a class to the model which represents this concept.&lt;/p&gt;
+
+&lt;p&gt;Add to the &lt;em&gt;Model&lt;/em&gt; folder the &lt;code class=&quot;highlighter-rouge&quot;&gt;Class.cs&lt;/code&gt; file and insert the following code:&lt;/p&gt;
+
+&lt;p&gt;~~~ c#
+public class Class
+{
+	public String ClassId { get; set; }
+	public String RoomName { get; set; }
+	public List&lt;student&gt; Students {get; set;}&lt;/student&gt;&lt;/p&gt;
+
+&lt;p&gt;}
+~~~&lt;/p&gt;
+
+&lt;p&gt;Now, insert the &lt;code class=&quot;highlighter-rouge&quot;&gt;Class&lt;/code&gt; class to the &lt;code class=&quot;highlighter-rouge&quot;&gt;SchoolContext&lt;/code&gt;. It will appear like the following:&lt;/p&gt;
+
+&lt;p&gt;~~~ c#
+public class SchoolContext : DbContext
+{
+	public SchoolContext(DbContextOptions&lt;schoolcontext&gt; options) : base(options) { }&lt;/schoolcontext&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public DbSet&amp;lt;Student&amp;gt; Students { get; set; }
+public DbSet&amp;lt;Class&amp;gt; Classes { get; set; } } ~~~
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To generate another migration file, run the command &lt;code class=&quot;highlighter-rouge&quot;&gt;Add-Migration&lt;/code&gt; with a name which specifies the operation to do (adding a Class to the database):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Add-Migration CreateClassesMigration
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As you can see, a new class in the &lt;em&gt;Migrations&lt;/em&gt; folder has been created, containing the code to create:&lt;/p&gt;
+
+&lt;h5 id=&quot;create-classes-table-on-the-database-composed-by-classid-and-roomname-columns&quot;&gt;1 - Create &lt;strong&gt;Classes&lt;/strong&gt; table on the database, composed by &lt;em&gt;ClassId&lt;/em&gt; and &lt;em&gt;RoomName&lt;/em&gt; columns&lt;/h5&gt;
+
+&lt;p&gt;~~~ c#
+migrationBuilder.CreateTable(
+	name: “Classes”,
+	columns: table =&amp;gt; new
+	{
+		ClassId = table.Column&lt;string&gt;(nullable: false),
+		RoomName = table.Column&lt;string&gt;(nullable: true)
+	},
+	constraints: table =&amp;gt;
+	{
+		table.PrimaryKey(&quot;PK_Classes&quot;, x =&amp;gt; x.ClassId);
+	});
+~~~&lt;/string&gt;&lt;/string&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;add-a-classid-column-to-the-students-table&quot;&gt;2 - Add a &lt;strong&gt;ClassId&lt;/strong&gt; column to the &lt;strong&gt;Students&lt;/strong&gt; table&lt;/h5&gt;
+
+&lt;p&gt;~~~ c#
+migrationBuilder.AddColumn&lt;string&gt;(
+	name: &quot;ClassId&quot;,
+	table: &quot;Students&quot;,
+	nullable: true);
+~~~&lt;/string&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;add-the-contraint-to-link-the-foreign-key-of-table-students-to-the-primary-key-of-table-classes&quot;&gt;3 - Add the contraint to link the foreign key of table &lt;strong&gt;Students&lt;/strong&gt; to the primary key of table &lt;strong&gt;Classes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;~~~ c#
+migrationBuilder.AddForeignKey(
+	name: “FK_Students_Classes_ClassId”,
+	table: “Students”,
+	column: “ClassId”,
+	principalTable: “Classes”,
+	principalColumn: “ClassId”,
+	onDelete: ReferentialAction.Restrict);
+~~~&lt;/p&gt;
+
+&lt;p&gt;Now we can apply these changes to the database running:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Update-Database
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;figure&gt;
+	&lt;img src=&quot;https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/studentsTable_afterClassesMigration.PNG&quot; alt=&quot;Students Table View After ClassesMigration&quot; /&gt;
+	&lt;figcaption title=&quot;Students table view&quot;&gt;Students table view after the Classes Migration&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;
+	&lt;img src=&quot;https://marcomengoli.github.io/filesForPosts/DotNET_Core/2016-11-24-EFCore_createSimpleModel_codeFirst/classessTable.PNG&quot; alt=&quot;Classes Table View&quot; /&gt;
+	&lt;figcaption title=&quot;Students table view&quot;&gt;Students table view&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;As you can see, EF automatically infers the 1:N relation between &lt;strong&gt;Students&lt;/strong&gt; and &lt;strong&gt;Classes&lt;/strong&gt; and generates the foreign key in the &lt;strong&gt;Students&lt;/strong&gt; table. &lt;em&gt;That’s very elegant&lt;/em&gt;!&lt;/p&gt;
+
+&lt;h3 id=&quot;undoing-a-database-update&quot;&gt;Undoing a database update&lt;/h3&gt;
+
+&lt;p&gt;What can we do if the migration we have applied was wrong?
+Fortunately, EF provides also this scenario.&lt;/p&gt;
+
+&lt;p&gt;If you want to undo the &lt;code class=&quot;highlighter-rouge&quot;&gt;Update-Database&lt;/code&gt; command, you can just run a &lt;code class=&quot;highlighter-rouge&quot;&gt;Update-Database&lt;/code&gt; followed by the name of the migration you want to rollback.
+For example, if we want to come back to the previous state, when we had only the Students table, just run:&lt;/p&gt;
+
+&lt;p&gt;Now it’s time to generate the database. With EF core is a very simple operation, you only have to run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Update-Database CreateStudentsMigration
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/.net%20core/EFCore_createSimpleModel_codeFirst/&quot;&gt;Creating a simple model and generate the database with EF Core 1.0&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on November 24, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Setting up the Entity Framework Core in a Visual Studio Project]]></title>
+ <link rel="alternate" type="text/html" href="/.net%20core/setup_EFcore_vsproject/" />
+  <id>/.net%20core/setup_EFcore_vsproject</id>
+  <updated>2016-04-23T00:00:00-00:00</updated>
+  <published>2016-11-23T00:00:00+01:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Entity Framework Core is the brand new ORM framework that allows a .NET Core developer to work with a database without worrying about writing data-access code and mapping the object model with the relational model.&lt;/p&gt;
+
+&lt;p&gt;It has also some features that makes it more than a simple ORM: with EF Core , a developer can generate the relational model given the object model, or viceversa.&lt;/p&gt;
+
+&lt;p&gt;For an overview of the framework, see the &lt;a href=&quot;https://msdn.microsoft.com/en-gb/library/bb399567(v=vs.110).aspx&quot;&gt;MSDN documentation page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-ef-core-on-vs-for-code-first-approach&quot;&gt;Setup EF Core on VS for code-first approach&lt;/h2&gt;
+
+&lt;p&gt;With the &lt;em&gt;code-first&lt;/em&gt; approach, once you have generated the &lt;em&gt;Model&lt;/em&gt; following certain &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/jj679962(v=vs.113).aspx&quot;&gt;conventions&lt;/a&gt;, you will be able to automatically generate the entire database and map the model classes with the generated relational tables.&lt;/p&gt;
+
+&lt;p&gt;To use the &lt;em&gt;EF Core&lt;/em&gt; with this approach, we need to install the packages which provide the EF commands and the database provider (in this example we will use &lt;em&gt;SqlServer&lt;/em&gt;). 
+We can procede using the Nuget &lt;em&gt;Package Manager Console&lt;/em&gt;, but we can use also the NuGet GUI window.&lt;/p&gt;
+
+&lt;p&gt;The packages to be installed are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Microsoft.EntityFrameworkCore.SqlServer&lt;/li&gt;
+  &lt;li&gt;Microsoft.EntityFrameworkCore.Tools -Pre&lt;/li&gt;
+  &lt;li&gt;Microsoft.EntityFrameworkCore.Design&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Before installing a package, we need to check the dependencies that it requires.
+Running the &lt;code class=&quot;highlighter-rouge&quot;&gt;Install-Package Microsoft.EntityFrameworkCore.SqlServer&lt;/code&gt; command, it will install the latest version of the package (currently 1.1.0).
+This package depends on other packages with version &amp;gt;= 1.1.0, but in my environment I have installed the LTS version 1.0.1. We have an issue.&lt;/p&gt;
+
+&lt;p&gt;There are 2 possible solutions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;update the .NET core environment to the non LTS version&lt;/li&gt;
+  &lt;li&gt;install the &lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.EntityFrameworkCore.SqlServer&lt;/code&gt; package selecting a version which requires dependencies &amp;gt;= 1.0.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In this case, I prefer to mantain the LTS version of .NET Core framework (1.0.1), so I’m going to install an ‘old’ version of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.EntityFrameworkCore.SqlServer&lt;/code&gt; package.&lt;/p&gt;
+
+&lt;p&gt;Looking at &lt;a href=&quot;https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/1.1.0&quot;&gt;its NuGet page&lt;/a&gt;, in the &lt;em&gt;Version History&lt;/em&gt; section, I can see all its versions.
+Clicking on one version, its detailed page will be shown, so I can check the version required for each dependency.&lt;/p&gt;
+
+&lt;p&gt;Once I have finished to check the dependencies, I have found that the version 1.0.1 of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.EntityFrameworkCore.SqlServer&lt;/code&gt; is the latest compatible, so I choose to install it.&lt;/p&gt;
+
+&lt;p&gt;To do so, I have to run on the Nuget Package Manager Console: &lt;code class=&quot;highlighter-rouge&quot;&gt;Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 1.0.1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;After a few seconds (once the &lt;em&gt;Restoring packages&lt;/em&gt; label on the top of &lt;em&gt;Solution Explorer&lt;/em&gt; tab fades away), the package is installed in the selected project (the one selected in the &lt;em&gt;Default project&lt;/em&gt; comboBox in the &lt;em&gt;Package Manager Console&lt;/em&gt; tab).&lt;/p&gt;
+
+&lt;p&gt;Now, let’s do the same operations also for &lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.EntityFrameworkCore.Tools&lt;/code&gt; and  &lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.EntityFrameworkCore.Design&lt;/code&gt; packages.&lt;/p&gt;
+
+&lt;p&gt;Run the following commands in the Nuget &lt;em&gt;Package Manager Console&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Install-Package Microsoft.EntityFrameworkCore.Tools -Version 1.0.0-preview3-final -Pre
+Install-Package Microsoft.EntityFrameworkCore.Design -Version 1.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The last thing required to complete the EF core setup is to add the EF tools to the &lt;code class=&quot;highlighter-rouge&quot;&gt;project.json&lt;/code&gt; file (in the root directory of the project).&lt;/p&gt;
+
+&lt;p&gt;Open the file and move to the “tool” section. Add between the brackets the following line:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Microsoft.EntityFrameworkCore.Tools.DotNet&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;1.0.0-preview3-final&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Make sure that the version corresponds to the one you have installed some minutes ago.&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-ef-core-on-vs-for-database-first-approach&quot;&gt;Setup EF core on VS for database-first approach&lt;/h2&gt;
+
+&lt;p&gt;If you already have a database, you can generate the model by your database schema.&lt;/p&gt;
+
+&lt;p&gt;To setup the EF core framework to work in this way, we have to install the packages required for the &lt;em&gt;code-first&lt;/em&gt; approach plus the &lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.EntityFrameworkCore.SqlServer.Design&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Run&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Install-Package Microsoft.EntityFrameworkCore.SqlServer.Design -Version 1.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/.net%20core/setup_EFcore_vsproject/&quot;&gt;Setting up the Entity Framework Core in a Visual Studio Project&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on November 23, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[OpenCV 3, the Mat object]]></title>
+ <link rel="alternate" type="text/html" href="/computer%20vision/opencv-mat/" />
+  <id>/computer%20vision/opencv-mat</id>
+  <updated>2016-04-20T00:00:00-00:00</updated>
+  <published>2016-04-20T00:00:00+02:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;In this post we will introduce the most used object of the new OpenCV3 library, using C++.&lt;/p&gt;
+
+&lt;p&gt;The aim of the &lt;strong&gt;Mat&lt;/strong&gt; object is to represent a matrix.
+It is composed by two parts: the header and the data.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The header contains information about the matrix itself (like the size of the matrix, the data type, number of channels etc…)&lt;/li&gt;
+  &lt;li&gt;The data contains the pointer to the real matrix&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Each Mat object has its header, while the data can be shared between multiple instances. The data will be deallocated only when there are no Mat objects pointing to it.&lt;/p&gt;
+
+&lt;p&gt;Mat is a very useful object: it is used in a lot of OpenCV functions and it also provides an automatic memory allocation and its release, so the programmers don’t need to do it manually.&lt;/p&gt;
+
+&lt;h2 id=&quot;library&quot;&gt;Library&lt;/h2&gt;
+
+&lt;p&gt;The Mat object and the functions we will see in this post are defined within the &lt;strong&gt;Core&lt;/strong&gt; library.&lt;/p&gt;
+
+&lt;p&gt;We can include it with the following preprocessor directive:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;opencv2\core\core.hpp&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Everything within this package is contained belogns to the &lt;code class=&quot;highlighter-rouge&quot;&gt;cv&lt;/code&gt; namespace.&lt;/p&gt;
+
+&lt;p&gt;You can choose to prepend the namespace &lt;code class=&quot;highlighter-rouge&quot;&gt;cv::&lt;/code&gt; to each object and function of the core library you are using as follows&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;cv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// or
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(...)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can also avoid prepending the namespace with the &lt;code class=&quot;highlighter-rouge&quot;&gt;using namespace&lt;/code&gt; directive, as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We will choose the second way.&lt;/p&gt;
+
+&lt;h2 id=&quot;creating-the-mat-object&quot;&gt;Creating the Mat object&lt;/h2&gt;
+
+&lt;h4 id=&quot;sharing-the-same-data&quot;&gt;Sharing the same data&lt;/h4&gt;
+
+&lt;p&gt;When using the assignment operator or the copy constructor, we get Mat instances having their own header, but sharing the same data.&lt;/p&gt;
+
+&lt;p&gt;In the following example, objects A, B and C will point to the same data, so modifying one or more cells in matrix A, the same changes will result on matrices B and C.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// or
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;cloning-the-data&quot;&gt;Cloning the data&lt;/h4&gt;
+
+&lt;p&gt;To obtain two distinct matrices, so that modifying a value on the first will not affect the same value of the second, we can use the &lt;code class=&quot;highlighter-rouge&quot;&gt;clone()&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;copyTo()&lt;/code&gt; operators.&lt;/p&gt;
+
+&lt;p&gt;In this way the two matrices will have different headers and two distinct datas, which will have the same values at the moment of the clone operation.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// or
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;copyTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;reading-an-image&quot;&gt;Reading an image&lt;/h4&gt;
+
+&lt;p&gt;To initialize a Mat object filling its values directly from an image saved into the memory, you can use the &lt;strong&gt;imread&lt;/strong&gt; function, whose signature is&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;imread(String &amp;amp; filename, int flags = IMREAD_COLOR)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;which expects two parameters:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;the name of the image file to load and file&lt;/li&gt;
+  &lt;li&gt;the image mode (the default is IMREAD_COLOR), for example:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;IMREAD_UNCHANGED&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loaded&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;otherwise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gets&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cropped&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;IMREAD_GRAYSCALE&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;always&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;single&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;grayscale&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;IMREAD_COLOR&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;always&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BGR&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;IMREAD_ANYDEPTH&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;corresponding&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;depth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;otherwise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;IMREAD_ANYCOLOR&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;possible&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The function loads the image from the specified file, allocates the memory and returns the Mat object.&lt;/p&gt;
+
+&lt;p&gt;If the image cannot be read, the function returns an empty matrix (Mat::data==NULL).&lt;/p&gt;
+
+&lt;h4 id=&quot;creating-a-new-mat-object&quot;&gt;Creating a new Mat object&lt;/h4&gt;
+
+&lt;p&gt;We can create a Mat object also specifying its size (the number of rows and columns), the number of channels per cell and its initial value.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Scalar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;the &lt;strong&gt;type&lt;/strong&gt; parameter is constructed according to the following convention:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;CV_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bits&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;eg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_8UC1&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_8UC2&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channels&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_8UC3&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channels&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_8UC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channels&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_64FC1&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bits&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_64FC4&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bits&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channels&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CV_64FC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bits&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channels&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;per&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The &lt;strong&gt;Scalar&lt;/strong&gt; type s is an optional &lt;strong&gt;4-element short vector&lt;/strong&gt; value to initialize each matrix element with.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The type Scalar is widely used in OpenCV to pass pixel values&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s see some examples:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CV_8UC3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Scalar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// creates a 2x2 matrix, each value is an 8 bit unsigned short, 3 channels for each cell, initialized to 0, 0 and 255.
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CV_8UC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Scalar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// creates a 3x3 matrix, each value is an 8 bit unsigned short, only 1 channel for each cell, initializing all cell values  to 0 value.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;other-ways-to-create-the-mat-object&quot;&gt;Other ways to create the Mat object&lt;/h4&gt;
+
+&lt;p&gt;Three methods similar to the constructor seen above are &lt;strong&gt;Mat::zeros&lt;/strong&gt; , &lt;strong&gt;Mat::ones&lt;/strong&gt; and &lt;strong&gt;Mat::eye&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can use these 3 functions specifying the number of rows, of columns and the type of the cell.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CV_8UC1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sets all elements to 0
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CV_8UC1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sets all elements to 1
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CV_8UC1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sets all elements to 0, except the main diagonal to 1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The last method to create (small) matrices is using the &lt;strong&gt;«&lt;/strong&gt; operator:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;output&quot;&gt;Output&lt;/h2&gt;
+
+&lt;p&gt;The Mat object can be inserted into the &lt;strong&gt;«&lt;/strong&gt; operators to print the matrix to a stream.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;save-the-matrix-in-an-image-file-on-the-disk&quot;&gt;Save the matrix in an image file on the disk&lt;/h2&gt;
+
+&lt;p&gt;To save a Mat object, creating an image file on the disk, use the &lt;strong&gt;imwrite&lt;/strong&gt; function. Parametes are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;const String &amp;amp; filename - the file name (including the path) where to save the image&lt;/li&gt;
+  &lt;li&gt;InputArray img - the object containing the matrix to save&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s check an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;imwrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;../../images/myIImage.jpg&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;accessing-pixel-values&quot;&gt;Accessing pixel values&lt;/h2&gt;
+
+&lt;p&gt;To access to the intensity value of a pixel of the matrix, first you have to know the number of channels per pixel. In a simple grayscale image, there will be only 1 channel, while in a RGB color image there will be 3 channels per pixel.&lt;/p&gt;
+
+&lt;p&gt;On a single channel, for example a Mat object of type &lt;strong&gt;8UC1&lt;/strong&gt;, you can access the pixel value (0-255) in the following way:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Scalar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;at&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;note-to-maintain-the-usual-math-order-first-the-row-then-the-column-number-you-have-to-specify-the-y-parameter-before-the-x-parameter&quot;&gt;Note: to maintain the usual math order (first the row, then the column number), you have to specify the &lt;strong&gt;y parameter before the x parameter&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;It can be very tricky, so you can use the &lt;strong&gt;Point&lt;/strong&gt; object to prevent sneaky errors:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Scalar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;at&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Point&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can also use this notation to change the value of a pixel:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;at&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Point&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// setting the pixel (x,y) to 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;On a 3-channel image, the way to access to each pixel and to the 3 values of each pixel (one per channel) is the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Vec3b&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;at&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Vec3b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Point&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;green&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;red&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;note-the-redgreenblue-order-is-the-inverse-of-what-you-can-expect&quot;&gt;Note: the RedGreenBlue order is the inverse of what you can expect&lt;/h5&gt;
+
+&lt;p&gt;Of course, if the matrix type is not equals to &lt;strong&gt;8UC1&lt;/strong&gt; you have to change the type of the variables representing each channel. For example, with data type &lt;strong&gt;CV_64FC1&lt;/strong&gt;, the variables’ type will be:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Vec3f&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;at&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Vec3f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;green&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;red&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;intensity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;splitting-the-rgb-image&quot;&gt;Splitting the RGB image&lt;/h4&gt;
+
+&lt;p&gt;OpenCV provides the &lt;code class=&quot;highlighter-rouge&quot;&gt;split()&lt;/code&gt; function to split the 3-channels RGB image into 3 Mat objects, one per channel.
+The parameters are the Mat object containing the source image and the vector of Mat objects, representing each RGB channel &lt;strong&gt;in reverse order, where the first is Blue, then Green and Red&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bgr_channels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bgr_channels&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;visualizing-an-image&quot;&gt;Visualizing an image&lt;/h2&gt;
+
+&lt;p&gt;To visualize an image on the screen, especially to check the results of your algorithm, OpenCV includes some very useful method for creating (&lt;strong&gt;namedWindow&lt;/strong&gt;) and visualizing (&lt;strong&gt;imshow&lt;/strong&gt;) a 8UC image.&lt;/p&gt;
+
+&lt;p&gt;Both methods will require, as the first parameter, a String containing the name of the window. Each window will be referenced by its name.&lt;/p&gt;
+
+&lt;p&gt;Let’s look at an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Mat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;../data/image.jpg&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;namedWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;windowName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WINDOW_AUTOSIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;imshow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;windowName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;waitKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;waitKey(timeout)&lt;/strong&gt; is a function waiting until a timeout for a key stroke. When pressing the key, the focus must be in the “windowName” window, otherwise it’s discarded.&lt;/p&gt;
+
+&lt;h5 id=&quot;note-1-setting-the-timeout-to-0-the-function-will-wait-undefinitively-until-the-key-stroke&quot;&gt;Note 1: setting the timeout to 0, the function will wait undefinitively until the key stroke&lt;/h5&gt;
+
+&lt;h5 id=&quot;note-2-putting-the-waitkey-function-inside-a-loop-it-will-create-a-transition-where-the-speed-depends-on-the-timeout-time-lower-timeout-higher-speed&quot;&gt;Note 2: putting the waitKey function inside a loop, it will create a transition where the speed depends on the timeout time (lower timeout, higher speed)&lt;/h5&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/computer%20vision/opencv-mat/&quot;&gt;OpenCV 3, the Mat object&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on April 20, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[First steps with OpenCV]]></title>
+ <link rel="alternate" type="text/html" href="/computer%20vision/opencv-intro/" />
+  <id>/computer%20vision/opencv-intro</id>
+  <updated>2016-04-16T00:00:00-00:00</updated>
+  <published>2016-04-16T00:00:00+02:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;In this first post about computer vision, and in particular about the usage of &lt;strong&gt;OpenCV&lt;/strong&gt; library, we will use the &lt;strong&gt;Windows 7&lt;/strong&gt; operating system and the &lt;strong&gt;Visual Studio 2012&lt;/strong&gt; IDE. I’m assuming that you’ve got this IDE already installed.&lt;/p&gt;
+
+&lt;h3 id=&quot;download-and-install-opencv&quot;&gt;Download and install OpenCV&lt;/h3&gt;
+
+&lt;p&gt;First of all, we need to download and install the OpenCV library. You can find the already compiled packages
+&lt;a href=&quot;https://sourceforge.net/projects/opencvlibrary/files/opencv-win/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once you have downloaded it, run the executable file. Select the directory where the library install.
+&lt;strong&gt;Note: to avoid the pain of the hell, DO NOT USE PATH WITH SPACES!!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;environment-configurations&quot;&gt;Environment configurations&lt;/h3&gt;
+
+&lt;p&gt;Now we have to set the environment variables. In particular, we add the &lt;code class=&quot;highlighter-rouge&quot;&gt;OPENCV&lt;/code&gt; variable with value:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;c:&lt;span class=&quot;se&quot;&gt;\o&lt;/span&gt;pencv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If we decide to use static libraries into our C++ software, our environment variables configuration is already done.&lt;/p&gt;
+
+&lt;p&gt;If we want to use dynamic libraries (windows’ DLL), we have to specify to the operating system the location where to find them. We do it by adding to the &lt;code class=&quot;highlighter-rouge&quot;&gt;PATH&lt;/code&gt; variable the OpenCV &lt;strong&gt;bin&lt;/strong&gt; path:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%OPENCV%&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;uild&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;64&lt;span class=&quot;se&quot;&gt;\v&lt;/span&gt;c11&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note: the vc11 compiler type is specific for Visual Studio 2012, vc10 for VS2010 and vc12 for later versions.&lt;/p&gt;
+
+&lt;h3 id=&quot;visual-studio-2012-configurations&quot;&gt;Visual Studio 2012 configurations&lt;/h3&gt;
+
+&lt;p&gt;After setting all environment variables, we are ready to launch VisualStudio. First of all, we create a new Win32 Application project.&lt;/p&gt;
+
+&lt;p&gt;Once the project is created, we need to set the &lt;strong&gt;include path&lt;/strong&gt; and the &lt;strong&gt;additional libraries path&lt;/strong&gt;. Unfortunately we have to set these properties for each project. Visual Studio helps us to do quickly those things by creating a properties file the first time, save it and then load it for each project.&lt;/p&gt;
+
+&lt;p&gt;To do this, we need to switch from the &lt;strong&gt;Solution explorer&lt;/strong&gt; window to &lt;strong&gt;Property manager&lt;/strong&gt;. As we can see, there are two main directories: Debug and Release.&lt;/p&gt;
+
+&lt;p&gt;Right click on the former, &lt;strong&gt;Add new project Property sheet&lt;/strong&gt;.
+Now go to &lt;code class=&quot;highlighter-rouge&quot;&gt;C/C++ -&amp;gt; Additional Include Directories&lt;/code&gt; and add&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;OPENCV&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;uild&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;nclude
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then &lt;code class=&quot;highlighter-rouge&quot;&gt;Linker -&amp;gt; General -&amp;gt; Additional Include Directories&lt;/code&gt; and add&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;OPENCV&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\b&lt;/span&gt;uild&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;64&lt;span class=&quot;se&quot;&gt;\v&lt;/span&gt;c11&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;ib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Finally, &lt;code class=&quot;highlighter-rouge&quot;&gt;Linker -&amp;gt; Input -&amp;gt; Additional Dependencies&lt;/code&gt; and add:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;opencv_world300d.lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We can confirm the modifications and press the &lt;strong&gt;save&lt;/strong&gt; icon.&lt;/p&gt;
+
+&lt;p&gt;We need to do the same thing for the &lt;strong&gt;Release&lt;/strong&gt; directory too, with the only difference that consists in omitting the &lt;strong&gt;d&lt;/strong&gt; letter at the end of each &lt;strong&gt;Additional Dependencies&lt;/strong&gt; library (&lt;strong&gt;d&lt;/strong&gt; is only for debug). The &lt;strong&gt;Additional Dependencies&lt;/strong&gt; will be:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;opencv_world300.lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Doing these operations, we have created two properties files. We can load those files into every new project without specifying all the properties every time.&lt;/p&gt;
+
+&lt;h4 id=&quot;x64-configuration&quot;&gt;x64 configuration&lt;/h4&gt;
+
+&lt;p&gt;Only if your system is 64 bit, you need to do the last configuration.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;strong&gt;Properties&lt;/strong&gt; windows, click the &lt;strong&gt;Configuration Manager…&lt;/strong&gt; button.
+In the window that appears, click in the combobox under the &lt;strong&gt;Platform&lt;/strong&gt; column, select the **&lt;new...&gt;**.
+In the **New platform** combobox, select **x64**. Confirm everything and your project is configurated to work into a 64 bit system.&lt;/new...&gt;&lt;/p&gt;
+
+&lt;p&gt;*Note: this setting is to do for every project, since it’s not possible to save it into the Property Sheet.&lt;/p&gt;
+
+&lt;p&gt;Note: sometimes Visual Studio fails to compile although everything appears to be well configurated. Try to close and re-open the IDE: it will probably work again.&lt;/p&gt;
+
+&lt;h4 id=&quot;links&quot;&gt;Links&lt;/h4&gt;
+&lt;p&gt;Here are the links to download the &lt;a href=&quot;https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/opencv/OPENCV_DEBUG_PropertySheet.props&quot;&gt;debug&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcoMengoli/marcomengoli.github.io/blob/master/filesForPosts/opencv/OPENCV_RELEASE_PropertySheet.props&quot;&gt;release&lt;/a&gt; property sheets for Visual Studio 2012.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/computer%20vision/opencv-intro/&quot;&gt;First steps with OpenCV&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on April 16, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Python, working with Excel spreadsheets.]]></title>
+ <link rel="alternate" type="text/html" href="/programming%20python/python-excel/" />
+  <id>/programming%20python/python-excel</id>
+  <updated>2016-01-26T00:00:00-00:00</updated>
+  <published>2016-01-26T00:00:00+01:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Python has a lot of powerful libraries. In this post we’ll use &lt;strong&gt;openpyxl&lt;/strong&gt;, which allows you to work easily with Excel spreadsheets.&lt;/p&gt;
+
+&lt;p&gt;We will refer to the Python2 version of the library. It is also available for Python3 and should also be compatible with this one.&lt;/p&gt;
+
+&lt;p&gt;The full project documentation is available &lt;a href=&quot;http://openpyxl.readthedocs.org/en/2.3.3/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The Excel formats currently supported by this module are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;.xlsx&lt;/li&gt;
+  &lt;li&gt;.xlsm&lt;/li&gt;
+  &lt;li&gt;.xltx&lt;/li&gt;
+  &lt;li&gt;.xltm&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;installing-the-library&quot;&gt;Installing the library&lt;/h2&gt;
+
+&lt;p&gt;First of all, we need to install the &lt;em&gt;openpyxl&lt;/em&gt; module, so make sure you have installed a Python package management system.&lt;/p&gt;
+
+&lt;p&gt;Following we will use &lt;em&gt;pip&lt;/em&gt;. It comes already installed if using Python 2 &amp;gt;= 2.7.9 or Python 3 &amp;gt;= 3.4. You can install &lt;em&gt;pip&lt;/em&gt; in your Linux system running:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install pip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;to install pip for python2, or&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install pip3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;for python3.&lt;/p&gt;
+
+&lt;p&gt;After that, install the openpyxl library using pip:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install openpyxl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you want to be able to include images into the Excel file, you have to install also the &lt;em&gt;pillow&lt;/em&gt; module:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install pillow
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;using-the-library&quot;&gt;Using the library&lt;/h2&gt;
+
+&lt;h3 id=&quot;shebang--importing&quot;&gt;Shebang &amp;amp; importing&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;openpyxl&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_workbook&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The second line is used to declare the UTF-8 encoding of the Python source file.&lt;/p&gt;
+
+&lt;h3 id=&quot;opening-the-file&quot;&gt;Opening the file&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_workbook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;excelFileName.xlsx&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data_only&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Setting the data_only attribute to True, you will access to the values of the cells, otherwise you will access to the formula of the cell.&lt;/p&gt;
+
+&lt;h3 id=&quot;selecting-a-sheet&quot;&gt;Selecting a sheet&lt;/h3&gt;
+
+&lt;p&gt;To select the current sheet, use&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;active&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you wnat to access to a specific sheet knowing its name, do&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;D1_densa_WGS84_quota&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;reading--writing-a-cell-value&quot;&gt;Reading &amp;amp; writing a cell value&lt;/h3&gt;
+
+&lt;p&gt;To read a cell value:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;D2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ws&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;D2&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;saving-the-file&quot;&gt;Saving the file&lt;/h3&gt;
+
+&lt;p&gt;After the modifications apported to the file, remember to save the file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;aFileName.xlsm&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note that the file name used in &lt;em&gt;save()&lt;/em&gt; function can be different to the file name used in &lt;em&gt;open()&lt;/em&gt; function. In that case, it will create a new file, otherwise if the name is the same it will overwrite the old file.&lt;/p&gt;
+
+&lt;h3 id=&quot;threating-column-letters-as-numbers&quot;&gt;Threating column letters as numbers&lt;/h3&gt;
+
+&lt;p&gt;Working with letters to index a column can be difficult, expecially when you have to do with a lot of column.
+A simply solution is to call two functions which gives you the column index of a given letter or the column letter by a given index.&lt;/p&gt;
+
+&lt;p&gt;To use these functions, first you have to import them, and then you can invoke.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;openpyxl.cell&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_column_letter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column_index_from_string&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;colDIndex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column_index_from_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;D&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;colLetter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_column_letter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;colIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;getting-the-max-col-and-row-used&quot;&gt;Getting the max col and row used&lt;/h3&gt;
+
+&lt;p&gt;It’s useful sometimes to know the last row or column used in the current sheet.&lt;/p&gt;
+
+&lt;p&gt;To know these informations, you can use the functions:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;maxRow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_row&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;maxCol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_column&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;full-example&quot;&gt;Full example&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;openpyxl&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_workbook&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;openpyxl.cell&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_column_letter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column_index_from_string&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_workbook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;name.xlsx&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;#, data_only=True)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;active&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# or sheet = wb[&quot;Sheet1&quot;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;excelNorthCol&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;excelEastCol&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;B&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rowIndex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;valueToWrite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;north&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{0}{1}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;excelNorthCol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rowIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# (sheet[&quot;A1&quot;].value)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;east&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{0}{1}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;excelEastCol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rowIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# (sheet[&quot;B1&quot;].value)&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;maxCol&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_column&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_column_letter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;maxCol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rowIndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# or, eventually:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# columnIndexToWrite = 3&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# cell = get_column_letter(columnIndexToWrite) + str(rowIndex)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sheet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;valueToWrite&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;wb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;name.xlsx&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/programming%20python/python-excel/&quot;&gt;Python, working with Excel spreadsheets.&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on January 26, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Go channels]]></title>
+ <link rel="alternate" type="text/html" href="/go%20programming/go-channel/" />
+  <id>/go%20programming/go-channel</id>
+  <updated>2016-01-10T00:00:00-00:00</updated>
+  <published>2016-01-10T00:00:00+01:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;This article describes the differences between the buffered and unbuffered channels provided by the Go language.&lt;/p&gt;
+
+&lt;h2 id=&quot;syntax&quot;&gt;Syntax&lt;/h2&gt;
+
+&lt;h4 id=&quot;creating-an-unbuffered-channel&quot;&gt;Creating an unbuffered channel&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go
+var channel = make(chan int)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;creating-a-buffered-channel&quot;&gt;Creating a buffered channel&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go
+var channel = make(chan int, BUFF_SIZE)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;reading-a-value-from-a-channel&quot;&gt;Reading a value from a channel&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go
+var value = &amp;lt;- channel` or `value := &amp;lt;- channel
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;sending-a-value-into-a-channel&quot;&gt;Sending a value into a channel&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go
+channel &amp;lt;- value
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;description&quot;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Basically, &lt;strong&gt;buffer size&lt;/strong&gt; corresponds to the number of &lt;em&gt;goroutines&lt;/em&gt; that can send a value to the channel without blocking before a &lt;strong&gt;receive&lt;/strong&gt; operation is performed on it: subsequent goroutines sending a value will block and wait until at least one &lt;em&gt;receive&lt;/em&gt; operation reads data from the channel.&lt;/p&gt;
+
+&lt;p&gt;The behavior of a &lt;strong&gt;send&lt;/strong&gt; operation can be summarized as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;A goroutine appends a value into the channel using the &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;-&lt;/code&gt; operator (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;channelName &amp;lt;- value&lt;/code&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Every channel includes a &lt;em&gt;buffer&lt;/em&gt; and a &lt;em&gt;queue&lt;/em&gt; of values.&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;If the buffer is not full, the value is appended to the buffer. The sender process can go on without blocking.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;If the buffer is full (or with size = 0), the value is put into the channel queue. The sender process blocks.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;On the other hand, the behavior of a &lt;strong&gt;receive&lt;/strong&gt; is the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;A process reads a value from the channel using the &lt;em&gt;&amp;lt;-&lt;/em&gt; operator (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;variable &amp;lt;- channelName&lt;/code&gt;).&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;If buffer size &amp;gt; 0 and the buffer is currently empty (therefore, its queue is empty as well), the receiver blocks until a value is sent into the channel. The same behavior occurs if buffer size is 0 and the queue is empty.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;If the buffer is not empty, the oldest value is extracted from the buffer and returned to the receiver goroutine. &lt;strong&gt;If the queue is empty&lt;/strong&gt;, then the number of values into the buffer decrements by one. If the &lt;strong&gt;queue is not empty&lt;/strong&gt;, the first value is extracted from the queue, is put into the buffer and &lt;em&gt;the sender process is unlocked&lt;/em&gt;, so it can continue.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here’s the code used in the example. It consists of 4 goroutines sending an integer value into a channel, and a main function which receives and prints the 4 values retrieved from the channel.&lt;/p&gt;
+
+&lt;p&gt;```go&lt;/p&gt;
+
+&lt;p&gt;package main&lt;/p&gt;
+
+&lt;p&gt;import (“fmt”
+“time”)&lt;/p&gt;
+
+&lt;p&gt;const BUFF_SIZE = 0&lt;/p&gt;
+
+&lt;p&gt;var ch = make(chan int, BUFF_SIZE)&lt;/p&gt;
+
+&lt;p&gt;func main() {&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go send(1)
+go send(2)
+go send(3)
+go send(4)
+
+
+time.Sleep(time.Second *  4)
+
+
+for i := 0; i &amp;lt; 4; i++ {
+	fmt.Printf(&quot;\t\t\t\tMAIN: I want to read a value from the channel\n&quot;)
+	&amp;lt;-ch
+	fmt.Printf(&quot;\t\t\t\tMAIN: I have read a value from the channel\n&quot;)
+
+	time.Sleep(time.Second *  2)
+}
+
+
+fmt.Printf(&quot;EXIT\n&quot;) }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;func send(n int){
+	time.Sleep(time.Second *  2)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fmt.Printf(&quot;P%d: I want to write value &#39;%d&#39; into the channel\n&quot;, n, n)
+ch &amp;lt;- n
+fmt.Printf(&quot;P%d: I have written value &#39;%d&#39; into the channel\n&quot;, n, n)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h3 id=&quot;unbuffered---synchronous-behavior&quot;&gt;Unbuffered - Synchronous behavior&lt;/h3&gt;
+
+&lt;h4 id=&quot;buffsize--0-or-blank-parameter&quot;&gt;BUFF_SIZE = 0 or blank parameter&lt;/h4&gt;
+
+&lt;p&gt;If the channel is unbuffered, sending a value blocks the process until another goroutine executes a &lt;em&gt;receive&lt;/em&gt; on the channel.&lt;/p&gt;
+
+&lt;p&gt;More than one process can send a value onto the same channel. In that case, each of them blocks until a &lt;em&gt;receive&lt;/em&gt; operation (per message) is performed on the channel.&lt;/p&gt;
+
+&lt;p&gt;A similar process applies to &lt;em&gt;receive&lt;/em&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the buffer queue is empty, it blocks the process which executes the &lt;em&gt;receive&lt;/em&gt; until a value is available on the channel.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the queue is not empty, the first value (in FIFO order) is extracted and the blocked process which inserted that value into the channel can go on.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+P1: I want to write value &#39;1&#39; into the channel
+P2: I want to write value &#39;2&#39; into the channel
+P3: I want to write value &#39;3&#39; into the channel
+P4: I want to write value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P1: I have written value &#39;1&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P2: I have written value &#39;2&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P3: I have written value &#39;3&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P4: I have written value &#39;4&#39; into the channel
+EXIT
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;buffered---asynchronous-behavior-until-buffer-not-full&quot;&gt;Buffered - Asynchronous behavior (until buffer not full)&lt;/h3&gt;
+
+&lt;h4 id=&quot;buffered-with-buffsize--1&quot;&gt;Buffered with BUFF_SIZE = 1&lt;/h4&gt;
+
+&lt;p&gt;When the channel is buffered,  you can write into it without blocking the goroutine until the buffer is full. After that, the channel behaves as if it were unbuffered; when a process executes a &lt;em&gt;receive&lt;/em&gt; operation, retrieving a value from the channel’s buffer, it decreases the number of “slots” used, unlocking one sending goroutine.&lt;/p&gt;
+
+&lt;p&gt;If a goroutine executes a &lt;em&gt;receive&lt;/em&gt; operation, the buffer is empty and no other value is waiting in the queue (to enter the buffer), the receiving goroutine blocks.&lt;/p&gt;
+
+&lt;p&gt;Here are 2 examples involving buffered channels having buffer size set to 1 and 2, respectively.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+P1: I want to write value &#39;1&#39; into the channel
+P1: I have written value &#39;1&#39; into the channel
+P2: I want to write value &#39;2&#39; into the channel
+P3: I want to write value &#39;3&#39; into the channel
+P4: I want to write value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P2: I have written value &#39;2&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P3: I have written value &#39;3&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P4: I have written value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+EXIT
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;buffered-with-buffsize--2&quot;&gt;Buffered with BUFF_SIZE = 2&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+P1: I want to write value &#39;1&#39; into the channel
+P1: I have written value &#39;1&#39; into the channel
+P2: I want to write value &#39;2&#39; into the channel
+P2: I have written value &#39;2&#39; into the channel
+P3: I want to write value &#39;3&#39; into the channel
+P4: I want to write value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P3: I have written value &#39;3&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+P4: I have written value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+EXIT
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;buffered-with-buffsize--4&quot;&gt;Buffered with BUFF_SIZE = 4&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+P1: I want to write value &#39;1&#39; into the channel
+P1: I have written value &#39;1&#39; into the channel
+P2: I want to write value &#39;2&#39; into the channel
+P2: I have written value &#39;2&#39; into the channel
+P3: I want to write value &#39;3&#39; into the channel
+P3: I have written value &#39;3&#39; into the channel
+P4: I want to write value &#39;4&#39; into the channel
+P4: I have written value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+EXIT
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;buffered-with-buffsize--5&quot;&gt;Buffered with BUFF_SIZE = 5&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+P1: I want to write value &#39;1&#39; into the channel
+P1: I have written value &#39;1&#39; into the channel
+P2: I want to write value &#39;2&#39; into the channel
+P2: I have written value &#39;2&#39; into the channel
+P3: I want to write value &#39;3&#39; into the channel
+P3: I have written value &#39;3&#39; into the channel
+P4: I want to write value &#39;4&#39; into the channel
+P4: I have written value &#39;4&#39; into the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+		MAIN: I want to read a value from the channel
+		MAIN: I have read a value from the channel
+EXIT
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/go%20programming/go-channel/&quot;&gt;Go channels&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on January 10, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Git command line basics]]></title>
+ <link rel="alternate" type="text/html" href="/tutorial/GitBeginnerTutorial/" />
+  <id>/tutorial/GitBeginnerTutorial</id>
+  <updated>2015-11-15T00:00:00-00:00</updated>
+  <published>2015-11-15T00:00:00+01:00</published>
+  
+  <author>
+    <name>Marco Mengoli</name>
+    <uri></uri>
+    <email>marco.mengoli4@yahoo.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;In this post are listes the very few basic git commands with a brief description.&lt;/p&gt;
+
+&lt;p&gt;I suggest the reading of the beautiful free e-book written by Scott Chacon and Ben Straub available &lt;a href=&quot;https://progit.org/&quot;&gt;here&lt;/a&gt;.
+It’s very well written, very clear, with a lot of examples. This post contains only the syntax of few commands you can find in the book more in-depth.&lt;/p&gt;
+
+&lt;p&gt;You can also improve your knowledge of command usage looking at the man help:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git &amp;lt;&lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;-name&amp;gt; --help
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Where &lt;code class=&quot;highlighter-rouge&quot;&gt;command-name&lt;/code&gt; is the Git command you want to know deeply.&lt;/p&gt;
+
+&lt;h2 id=&quot;basics&quot;&gt;BASICS&lt;/h2&gt;
+
+&lt;h3 id=&quot;addingremoving-files-tofrom-the-staging-area&quot;&gt;Adding/removing files to/from the staging area&lt;/h3&gt;
+
+&lt;p&gt;You can add your modified files to the stage (index) using:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git add &amp;lt;filename&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or, to add every modified file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git add &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To remove a file you have added to the staging area, you can do a rm in 2 ways:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git rm --cache&amp;lt;filename&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;will remove the file to the staging area, but it remains on your working directory (it’s not removed from your disk), while&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git rm &amp;lt;filename&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;removes the file also from the disk other then the staging area.&lt;/p&gt;
+
+&lt;h3 id=&quot;check-the-state&quot;&gt;Check the state&lt;/h3&gt;
+&lt;p&gt;To check what’s the state of each file, run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;commit&quot;&gt;Commit&lt;/h3&gt;
+
+&lt;p&gt;Now your new/modified files are on the stage. If you want to store these files into the repository, you have to commit the changes using&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;commit message&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can also commit writing more complex messages using the default git editor.
+To do that, just do a&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git commit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The default git editor will appear. Type the message, save and exit to execute the commit.
+To change the default git editor just do:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global core.editor YOUR_EDITOR_NAME_HERE
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;replacing YOUR_EDITOR_NAME_HERE with emacs, vim, nano or what you want.&lt;/p&gt;
+
+&lt;p&gt;Now, if you want to view the history of your commits, do a:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git log &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;--options]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Some options are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-p   which introduces the differences between each commit&lt;/li&gt;
+  &lt;li&gt;–graph   to see an ASCII graph of branches and merges&lt;/li&gt;
+  &lt;li&gt;–stat   to see some abbreviated stats for each commit&lt;/li&gt;
+  &lt;li&gt;–shortstat    to se an abbreviation of stat command&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tag&quot;&gt;TAG&lt;/h2&gt;
+&lt;p&gt;You can tag a version in 2 ways: annotated or lightweight.&lt;/p&gt;
+
+&lt;p&gt;ANNOTATED tags are stored in the Git database adding some informations.
+It’s recommended to use this type of tag to store more information.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git tag -a TAG &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-m TAG_MESSAGE]
+&lt;span class=&quot;c&quot;&gt;# e.g. git tag -a v1.2 -m &quot;some text here&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;replacing TAG with your tag (eg v1.2) without quotes or double quotes
+TAG_MESSAGE, instead, is a text message between double quotes “…”.&lt;/p&gt;
+
+&lt;p&gt;LIGHTWEIGHT tag are just a sort of pointer to a branch.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git tag TAG-lw
+&lt;span class=&quot;c&quot;&gt;# for example, git tag v1.2-lw&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can also tag later (a past branch). In this case the syntax is the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git tag -a TAG COMMIT_HASH
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;where COMMIT_HASH is the checksum (or a part of it) of the branch to tag.&lt;/p&gt;
+
+&lt;p&gt;To view all tags (or a few using the search pattern):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git tag -l &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;pattern]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;branch&quot;&gt;BRANCH&lt;/h2&gt;
+
+&lt;h3 id=&quot;create-branch-and-checkout&quot;&gt;Create branch and checkout&lt;/h3&gt;
+
+&lt;p&gt;To create a new branch:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch NewBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After the creation of the new branch, we are still on the “old” branch, so we switch on the new with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout NewBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There is also a shortucut to create a new branch and immediately move into it. We do that typing:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout -b NewBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;where the -b option lets the checkout command to create the branch to switch on.&lt;/p&gt;
+
+&lt;h3 id=&quot;list&quot;&gt;List&lt;/h3&gt;
+
+&lt;p&gt;To view the list of all branches, add the -l option as usual.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch -l
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are also two useful options, &lt;code class=&quot;highlighter-rouge&quot;&gt;--merged&lt;/code&gt; and ‘–no-merged`, that filter the list of branch to only those who are already merged or not into your current branch.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch --merged
+git branch --no-merged
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;merge&quot;&gt;Merge&lt;/h3&gt;
+
+&lt;p&gt;First, checkout to the branch A in which you want to merge the other branch B. Doing this, the modifications in file B are merged in branch A (B-&amp;gt;A).&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout MainBranchName
+
+git merge NewBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;delete&quot;&gt;Delete&lt;/h3&gt;
+
+&lt;p&gt;After the merge operation, you maybe want to delete the branche merged. You can do this with command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch -d NewBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To force the deletion of a branch despite there are changes not merged, use the -D option (uppercase):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch -D NewBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;stash&quot;&gt;STASH&lt;/h2&gt;
+
+&lt;p&gt;Sometimes it happens that you’re working on a branch, you have uncommitted files you don’t want to commit because the work is not already completed.
+This makes impossibile to change branch.
+To remedy this problem, you can use &lt;em&gt;stash&lt;/em&gt;.
+&lt;em&gt;Stash&lt;/em&gt; takes the uncommitted files on your working directory and stores them into a stash list.&lt;/p&gt;
+
+&lt;h3 id=&quot;stashing&quot;&gt;Stashing&lt;/h3&gt;
+&lt;p&gt;To insert the uncommitted files into the stash list, run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git stash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now running a &lt;em&gt;git status&lt;/em&gt; you can see that the working directory is clean.
+This means that you can switch to another branch and do the work.&lt;/p&gt;
+
+&lt;h3 id=&quot;list-1&quot;&gt;List&lt;/h3&gt;
+&lt;p&gt;To view the stash list, run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git stash list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;apply-stash&quot;&gt;Apply stash&lt;/h3&gt;
+&lt;p&gt;After you have switched to another branch and completed the work, you maybe want to switch back to the previous branch and resume the work you were doing before.&lt;/p&gt;
+
+&lt;p&gt;In this case you need to retrieve the stashed files and apply them to those on the current branch. To do it, print the stash list and run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git stash apply &amp;lt;stash-id&amp;gt;
+e.g. git stash apply stash@&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;drop-stash&quot;&gt;Drop stash&lt;/h3&gt;
+&lt;p&gt;If you have successfully applied the stash, it remains into the stash list.
+If you have not applied the stash, maybe you don’t need no more those stashed files.&lt;/p&gt;
+
+&lt;p&gt;It both cases it’s a good thing to delete those files. Do delete a stash, run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git stash drop &amp;lt;stash-id&amp;gt;
+e.g. git stash drop stash@&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;remotes&quot;&gt;REMOTES&lt;/h2&gt;
+
+&lt;h3 id=&quot;push&quot;&gt;Push&lt;/h3&gt;
+&lt;p&gt;After the commits, you probably want to update the remote repository with your new changes.&lt;/p&gt;
+
+&lt;p&gt;To upload the changes to the “master” branch on the “origin” repository:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;fetch&quot;&gt;Fetch&lt;/h3&gt;
+
+&lt;p&gt;To get all the data from a remote repository that you haven’t on local, you can do a fetch instruction.
+It’s important to note that Fetch instruction doesn’t merge nothing and doesn’t modify nothing you’re working on, only downloads the data you haven’r yet.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git fetch remoteName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;pull&quot;&gt;Pull&lt;/h3&gt;
+
+&lt;p&gt;The &lt;em&gt;Pull&lt;/em&gt; command is similar to &lt;em&gt;Fetch&lt;/em&gt;, but it merges the remote data with the local data of the branch you’re currently working on.
+Pull fetches and merges data only for the current branch you’re on, it doesn’t afflict the other branches.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note that your branch must be set up to track a remote branch to run the Pull command. By default the Clone command sets up only the master branch&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git pull
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If there is no tracking information for the current branch you are on, you have to specify which branch you want to merge with.
+You can do it adding the remote and branch names.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;delete-1&quot;&gt;Delete&lt;/h3&gt;
+
+&lt;p&gt;To delete a remote branch, you can do in 2 ways:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;from Git 1.5:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git push origin :remoteBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;from Git 1.7:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git push origin --delete remoteBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;difference-localremote-branches&quot;&gt;Difference local/remote branches&lt;/h3&gt;
+
+&lt;p&gt;To view the differences between a local branch and the corresponding remote branch, you have first do execute a Fetch instruction, then Diff:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git diff localBranchName remoteName/remotBranchName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;managing-remotes&quot;&gt;Managing remotes&lt;/h3&gt;
+
+&lt;p&gt;You can add a remote repository other than the “origin” just doing:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote add -f remoteName URLofRepo
+&lt;span class=&quot;c&quot;&gt;#e.g. git remote add github_remote https://github.com/MarcoMengoli/MorseCodeEmitter_RPi_Py&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-f&lt;/code&gt; is to fetch the remote branches&lt;/p&gt;
+
+&lt;p&gt;Now you can do a push/fetch to/from this repository.
+Common use case: you create a project in a directory and initialize a Git repository here with &lt;code class=&quot;highlighter-rouge&quot;&gt;git init&lt;/code&gt;. Now you create a remote repository on you favorite Git server. How to merge these two repositories? Simply doing a &lt;code class=&quot;highlighter-rouge&quot;&gt;git remote add -f origin remote_repo_url&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To view the list of your remotes:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote -v
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To inspect the content of a remote, knowing the branch available on the remote and local branch configured for pull or push, do:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote show remoteName
+&lt;span class=&quot;c&quot;&gt;#e.g. git remote show origin&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To remove a remote:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote rm remoteName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To rename a remote:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote rename oldRemoteName newRemoteName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;git-config&quot;&gt;GIT CONFIG&lt;/h2&gt;
+
+&lt;h3 id=&quot;show-current-settings&quot;&gt;Show current settings&lt;/h3&gt;
+
+&lt;p&gt;To view all your current Git settings, run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To view a specific setting, run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config &amp;lt;setting-name&amp;gt;
+e.g. git config user.name
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;git-credential-cache&quot;&gt;Git credential cache&lt;/h3&gt;
+
+&lt;p&gt;Sometimes it happens you have to enter your Git credentials frequently. It can become a boring thing.&lt;/p&gt;
+
+&lt;p&gt;The credential cache can give you a help. You can impose a timeout time in which you credentials remain memorized into the system. 
+You can do it running:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config credential.helper &lt;span class=&quot;s1&quot;&gt;&#39;cache --timeout=nsecs&#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;where nsecs is the timeout value in seconds.&lt;/p&gt;
+
+&lt;h3 id=&quot;user-name-and-email&quot;&gt;User name and email&lt;/h3&gt;
+
+&lt;p&gt;It’s important to set user information like name and email address because Git uses these informations on storing commits, and those commits are immutable.&lt;/p&gt;
+
+&lt;p&gt;To set user name and email address run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global user.name &lt;span class=&quot;s2&quot;&gt;&quot;Your name&quot;&lt;/span&gt;
+git config --global user.email your@email.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;text-editor&quot;&gt;Text editor&lt;/h3&gt;
+
+&lt;p&gt;One useful thing you can set is the text editor that Git will offer you to type a message.
+Git uses your current system’s editor. To chose a different one run:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global core.editor &amp;lt;editor-name&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;alias&quot;&gt;Alias&lt;/h3&gt;
+
+&lt;p&gt;An alias in git is… an alias: you can map a git command with a name, so you have not to enter the (maybe) long command string but only &lt;code class=&quot;highlighter-rouge&quot;&gt;git aliasName&lt;/code&gt;.
+To add an alias to Git, you have to do the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global alias.AliasName &lt;span class=&quot;s2&quot;&gt;&quot;your git command here&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#example: git config --global alias.BranchTree &quot;log --graph --abbrev-commit --decorate --format=format:&#39;%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)&#39; --all&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Let’s look at the example: we have not to write this very long &lt;code class=&quot;highlighter-rouge&quot;&gt;git log ...&lt;/code&gt; command, but only &lt;code class=&quot;highlighter-rouge&quot;&gt;git BranchTree&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5 id=&quot;aliases-to-print-the-branches-tree-i-recommend-to-add&quot;&gt;Aliases to print the branches tree I recommend to add&lt;/h5&gt;
+
+&lt;p&gt;I recommend to add the aliases you can find on &lt;a href=&quot;http://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git/34467298#34467298&quot;&gt;Slipp D. Thompson’s answer on StackOverflow&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To add them, just do:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global alias.branchtree1 &lt;span class=&quot;s2&quot;&gt;&quot;log --graph --abbrev-commit --decorate --format=format:&#39;%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)&#39; --all&quot;&lt;/span&gt;
+git config --global alias.branchtree2 &lt;span class=&quot;s2&quot;&gt;&quot;log --graph --abbrev-commit --decorate --format=format:&#39;%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n&#39;&#39;          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)&#39; --all&quot;&lt;/span&gt;
+git config --global alias.branchtree3 &lt;span class=&quot;s2&quot;&gt;&quot;log --graph --abbrev-commit --decorate --format=format:&#39;%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n&#39;&#39;          %C(white)%s%C(reset)%n&#39;&#39;          %C(dim white)- %an &amp;lt;%ae&amp;gt; %C(reset) %C(dim white)(committer: %cn &amp;lt;%ce&amp;gt;)%C(reset)&#39; --all&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After you have done that, you can simply call these Git commands in the same way of another built-in Git command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branchtree1
+git branchtree2
+git branchtree3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/tutorial/GitBeginnerTutorial/&quot;&gt;Git command line basics&lt;/a&gt; was originally published by Marco Mengoli at &lt;a href=&quot;&quot;&gt;Marco Mengoli's Blog&lt;/a&gt; on November 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+</feed>
