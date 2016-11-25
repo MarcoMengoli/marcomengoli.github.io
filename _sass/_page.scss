@@ -564,8 +564,9 @@ ul.social-buttons li a:active {
 	height: 100%;
 	min-height: 300px;
 	overflow: hidden;
-	background-color: $header-color;
-	background-image: url("/images/header_pattern.jpg");
+	//background-color: $header-color;
+	background-color: $prominent-darker-2-color;
+	//background-image: url("/images/header_pattern.jpg");
 	background-repeat: repeat;
 }
 .header-toggle{
