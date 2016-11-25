@@ -714,7 +714,8 @@ ul.social-buttons li a:active {
 }
 
 .header-menu-overflow{
-	background-image: url("/images/header_pattern.jpg");
+	//background-image: url("/images/header_pattern.jpg");
+	background-color: #0a8eb5;
 	background-repeat: repeat;
 	z-index: 100;
 	box-shadow: 0px 6px 5px rgba(0, 0, 0, 0.4);
@@ -735,7 +736,8 @@ ul.social-buttons li a:active {
 
 .header-menu-overflow .sub-item{
 	//background-color: $menu-top;
-	background-image: url("/images/header_pattern.jpg");
+	//background-image: url("/images/header_pattern.jpg");
+	background-color: #0a8eb5;
 }
 
 .header-item,
