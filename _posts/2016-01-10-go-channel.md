@@ -4,7 +4,7 @@ title: Go channels
 description: "Explaining via examples the difference between buffered and unbuffered channels in the Go language."
 modified: 2016-01-10
 tags: [Go, message-passing]
-categories: [Go Programming]
+categories: [Go language]
 ---
 
 This article describes the differences between the buffered and unbuffered channels provided by the Go language.
@@ -14,7 +14,7 @@ This article describes the differences between the buffered and unbuffered chann
 
 #### Creating an unbuffered channel
 
-```go
+``` go
 var channel = make(chan int)
 ```
 
@@ -22,20 +22,20 @@ var channel = make(chan int)
 #### Creating a buffered channel
 
 
-```go
+``` go
 var channel = make(chan int, BUFF_SIZE)
 ```
 
 
 #### Reading a value from a channel
 
-```go
+``` go
 var value = <- channel` or `value := <- channel
 ```
 
 #### Sending a value into a channel
 
-```go
+``` go
 channel <- value
 ```
 
@@ -64,7 +64,7 @@ On the other hand, the behavior of a **receive** is the following:
 
 Here's the code used in the example. It consists of 4 goroutines sending an integer value into a channel, and a main function which receives and prints the 4 values retrieved from the channel.
 
-```go
+``` go
 
 package main
 
