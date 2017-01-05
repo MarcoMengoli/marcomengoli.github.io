@@ -190,8 +190,8 @@ header .entry-meta {
 			padding: 20px 30px;
 		}
 		@media #{$large} {
-			max-width: 800px;
-			margin: 50px auto 30px auto;
+			max-width: 950px;
+			margin: 0px auto 30px auto;
 			padding: 50px 80px;
 			> p:first-child {
 				@include font-size(20);
