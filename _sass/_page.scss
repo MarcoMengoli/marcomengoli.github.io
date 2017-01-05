@@ -51,7 +51,11 @@ body {
 	}
 	
 	h1, h2, h3, h4, h5, h6 {
-		padding: 2em 0 0.2em 0;
+		padding: 0em 0 0.2em 0;
+	}
+	
+	h2 {
+		padding-top: 0.7em
 	}
 }
 
@@ -175,7 +179,7 @@ header .entry-meta {
 #post,
 #page {
 	.entry-content {
-		margin: 40px 2px 20px 2px;
+		margin: 0px 2px 20px 2px;
 		padding: 10px 15px;
 		background-color: $white;
 		box-shadow: 0 0 0 0, 0 6px 12px rgba($black,0.1);
@@ -231,7 +235,7 @@ header .entry-meta {
 			padding: 20px 30px;
 		}
 		@media #{$large} {
-			max-width: 800px;
+			max-width: 950px;
 			padding: 50px 80px;
 			margin: 0 auto 30px auto;
 		}
