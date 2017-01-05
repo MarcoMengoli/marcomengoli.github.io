@@ -429,3 +429,38 @@ git branchtree1
 git branchtree2
 git branchtree3
 ~~~
+
+### Proxy
+
+If you work behind a proxy, you have to set if before any remote operation.
+
+To do it, just run:
+
+~~~ shell
+git config --global http.proxy http://proxyuser:proxypwd@proxy.server.com:8080
+~~~
+
+where:
+
+* `proxyuser` is your proxy username
+* `proxypwd` is your proxy password
+* `proxy.server.com` is the URL of your proxy server
+* `8080` is the proxy port configured on your proxy server
+
+### Disable SSL verification
+
+If you work behind a proxy which makes use of a self-signed certificate, you can have problems doing remote operations.
+
+If the error that appears is something like:
+
+~~~ shell
+SSL certificate problem: self signed certificate in certificate chain
+~~~
+
+As reported on this [StackOverflow answer](http://stackoverflow.com/questions/11621768/how-can-i-make-git-accept-a-self-signed-certificate), you can disable SSL verification for that singular repository as a workaround. 
+
+~~~ shell
+git config http.sslVerify false
+~~~
+
+**Disabling TLS(/SSL) certificate verification globally is a terribly insecure practice. Don't do it. Do not issue the above command with a --global modifier.**
