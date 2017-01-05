@@ -457,7 +457,9 @@ If the error that appears is something like:
 SSL certificate problem: self signed certificate in certificate chain
 ~~~
 
-As reported on this [StackOverflow answer](http://stackoverflow.com/questions/11621768/how-can-i-make-git-accept-a-self-signed-certificate), you can disable SSL verification for that singular repository as a workaround. 
+it's possible to do a workaround.
+
+As reported on this [StackOverflow answer](http://stackoverflow.com/questions/11621768/how-can-i-make-git-accept-a-self-signed-certificate), you can disable SSL verification **for that singular repository**. 
 
 ~~~ shell
 git config http.sslVerify false
