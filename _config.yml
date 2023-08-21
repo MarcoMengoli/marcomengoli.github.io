@@ -4,6 +4,7 @@ disqus_shortname: mmblog
 reading_time:     true
 words_per_minute: 40
 logo:             images/logo.png
+url: https://marcomengoli.github.io
 # Your site's domain goes here (eg: //mmistakes.github.io, http://mademistakes.com, etc)
 # When testing locally leave blank or use http://localhost:4000
 # url: http://aronbordin.com/neo-hpstr-jekyll-theme
