@@ -1,0 +1,32 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import { socials } from "@/data/socials";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-200 dark:border-slate-800">
+  <div class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8 sm:flex-row sm:justify-between">
+    <p class="text-sm text-slate-500 dark:text-slate-500">
+      &copy; {year} Marco Mengoli. {t("footer.rights")}
+    </p>
+
+    <div class="flex items-center gap-4">
+      {
+        socials.map((social) => (
+          <a
+            href={social.url}
+            target={social.url.startsWith("mailto:") ? undefined : "_blank"}
+            rel={social.url.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+            aria-label={social.name}
+            class="text-slate-500 transition-colors hover:text-accent-500"
+          >
+            <Fragment set:html={social.icon} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>

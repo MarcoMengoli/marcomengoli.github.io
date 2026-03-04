@@ -1,0 +1,47 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import ScrollReveal from "@/components/ui/ScrollReveal.astro";
+import { socials } from "@/data/socials";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="contact" class="px-6 py-24 sm:py-32">
+  <div class="mx-auto max-w-2xl text-center">
+    <ScrollReveal>
+      <SectionHeading>{t("contact.heading")}</SectionHeading>
+    </ScrollReveal>
+
+    <ScrollReveal delay={100}>
+      <p class="mt-6 text-lg text-slate-600 dark:text-slate-400">
+        {t("contact.text")}
+      </p>
+    </ScrollReveal>
+
+    <ScrollReveal delay={200}>
+      <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+        {
+          socials.map((social) => (
+            <a
+              href={social.url}
+              target={social.url.startsWith("mailto:") ? undefined : "_blank"}
+              rel={
+                social.url.startsWith("mailto:")
+                  ? undefined
+                  : "noopener noreferrer"
+              }
+              class="inline-flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition-all hover:-translate-y-0.5 hover:border-accent-500/50 hover:text-accent-600 hover:shadow-lg hover:shadow-accent-500/5 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:border-accent-500/50 dark:hover:text-accent-400"
+            >
+              <span class="text-accent-500">
+                <Fragment set:html={social.icon} />
+              </span>
+              {social.name}
+            </a>
+          ))
+        }
+      </div>
+    </ScrollReveal>
+  </div>
+</section>

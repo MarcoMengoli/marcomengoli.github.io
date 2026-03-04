@@ -1,0 +1,107 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import ScrollReveal from "@/components/ui/ScrollReveal.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const interests = [
+  {
+    key: "about.interests.motorsport" as const,
+    icon: `<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" /></svg>`,
+  },
+  {
+    key: "about.interests.diving" as const,
+    icon: `<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>`,
+  },
+  {
+    key: "about.interests.cooking" as const,
+    icon: `<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /></svg>`,
+  },
+  {
+    key: "about.interests.travel" as const,
+    icon: `<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" /></svg>`,
+  },
+];
+---
+
+<section id="about" class="px-6 py-24 sm:py-32">
+  <div class="mx-auto max-w-5xl">
+    <ScrollReveal>
+      <SectionHeading>{t("about.heading")}</SectionHeading>
+    </ScrollReveal>
+
+    <div class="mt-12 grid gap-12 lg:grid-cols-5">
+      <!-- Text content -->
+      <div class="space-y-5 lg:col-span-3">
+        <ScrollReveal delay={100}>
+          <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+            {t("about.p1")}
+          </p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={200}>
+          <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+            {t("about.p2")}
+          </p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={300}>
+          <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+            {t("about.p3")}
+          </p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={400}>
+          <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+            {t("about.p4")}
+          </p>
+        </ScrollReveal>
+      </div>
+
+      <!-- Side panel with interests -->
+      <div class="lg:col-span-2">
+        <ScrollReveal delay={200}>
+          <div class="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500">
+              {lang === "en" ? "Interests" : "Interessi"}
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+              {
+                interests.map((interest) => (
+                  <div class="flex items-center gap-3 rounded-lg p-2 text-slate-600 dark:text-slate-400">
+                    <span class="text-accent-500">
+                      <Fragment set:html={interest.icon} />
+                    </span>
+                    <span class="text-sm font-medium">{t(interest.key)}</span>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={300}>
+          <div class="mt-4 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
+            <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500">
+              {lang === "en" ? "Education" : "Formazione"}
+            </h3>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-slate-700 dark:text-slate-300">
+                {lang === "en"
+                  ? "M.Sc. Computer Engineering"
+                  : "Laurea Magistrale in Ingegneria Informatica"}
+              </p>
+              <p class="text-sm text-slate-500 dark:text-slate-500">
+                {lang === "en"
+                  ? "University of Bologna"
+                  : "Universita' di Bologna"}
+              </p>
+            </div>
+          </div>
+        </ScrollReveal>
+      </div>
+    </div>
+  </div>
+</section>
