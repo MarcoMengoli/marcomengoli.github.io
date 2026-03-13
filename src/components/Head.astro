@@ -1,0 +1,65 @@
+---
+import { ClientRouter } from "astro:transitions";
+
+interface Props {
+  title: string;
+  description: string;
+  lang: string;
+}
+
+const { title, description, lang } = Astro.props;
+const site = Astro.site?.href ?? "https://marcomengoli.github.io";
+const enUrl = new URL("/", site).href;
+const itUrl = new URL("/it/", site).href;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content="Marco Mengoli" />
+
+<!-- Open Graph -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={lang === "it" ? "it_IT" : "en_US"} />
+
+<!-- hreflang for bilingual SEO -->
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="it" href={itUrl} />
+<link rel="alternate" hreflang="x-default" href={enUrl} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Dark mode FOUC prevention - must run synchronously before paint -->
+<script is:inline>
+  (function () {
+    const stored = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const theme = stored || (prefersDark ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  })();
+</script>
+
+<!-- Re-apply theme after view transitions -->
+<script>
+  document.addEventListener("astro:after-swap", () => {
+    const theme = localStorage.getItem("theme") ?? "dark";
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  });
+</script>
+
+<ClientRouter />
