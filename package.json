@@ -1,17 +1,25 @@
 {
-  "name": "marcomengoli.github.io",
-  "type": "module",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+  "name": "hpstr-theme",
+  "author": "Aron Bordin <aron.bordin@gmail.com>",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
   },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.2.0",
-    "astro": "^5.17.1",
-    "tailwindcss": "^4.2.0"
+  "bugs": {
+    "url": ""
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-imagemin": "~0.2.0",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.5.2",
+    "grunt-githooks": "^0.3.1",
+    "grunt-svgmin": "~0.2.0"
   }
 }
