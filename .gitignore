@@ -1,19 +1,1 @@
-# Dependencies
-node_modules/
-
-# Build output
-dist/
-
-# Astro
-.astro/
-
-# TypeScript
-*.tsbuildinfo
-
-# Environment
-.env
-.env.*
-
-# OS
-.DS_Store
 *.*~

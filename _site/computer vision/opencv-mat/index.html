@@ -1,0 +1,590 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>OpenCV 3, the Mat object &#8211; Marco Mengoli's Blog</title>
+<meta name="description" content="OpenCV 3: the Mat object">
+<meta name="keywords" content="OpenCV, C++, code, Computer Vision">
+
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV 3, the Mat object">
+<meta property="og:description" content="OpenCV 3: the Mat object">
+<meta property="og:url" content="/computer%20vision/opencv-mat/">
+<meta property="og:site_name" content="Marco Mengoli's Blog">
+
+
+
+
+
+<link rel="canonical" href="/computer%20vision/opencv-mat/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Marco Mengoli's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="entry-header">
+  <div class="header-menu header-menu-top">
+    <ul>
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="/">
+          
+            <img class="logo" src="/images/logo.png" alt="Marco Mengoli's Blog">
+          
+          <h2 class="title"> Marco Mengoli's Blog</h2>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="/about"><h3>About</h3></a></li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="/categories"><h3>Categories</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="/categories/#.NET core">.NET core</a></li>
+              
+                
+                  <li class="sub-item"><a href="/categories/#Computer vision">Computer vision</a></li>
+              
+                
+                  <li class="sub-item"><a href="/categories/#Go Programming">Go Programming</a></li>
+              
+                
+                  <li class="sub-item"><a href="/categories/#Programming Python">Programming Python</a></li>
+              
+                
+                  <li class="sub-item"><a href="/categories/#Tutorial">Tutorial</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="/tags"><h3>Tags</h3></a></li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="/"><h3>Home</h3></a></li>
+        
+      
+      <li class="header-item"><a href="/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+	  <div class="header-image">
+		<div class="header-title-wrap">
+		  <h1>OpenCV 3, the Mat object</h1>
+		  
+		    <h2><span class="entry-date date published updated"><time datetime="2016-04-20T00:00:00+02:00">April 20, 2016</time></span></h2>
+		  
+
+		  
+		    <p class="entry-reading-time">
+		      <i class="fa fa-clock-o"></i>
+		      
+		      Reading time ~53 minutes
+		    </p><!-- /.entry-reading-time -->
+		  
+		</div><!-- /.header-title-wrap -->
+	  </div><!-- /.header-title -->
+</div><!-- /.entry-header -->
+
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="/"><h3>Home</h3></a></li>
+      
+    
+      
+        <li><a href="/tags"><h3>Tags</h3></a></li>
+      
+    
+      
+        <li><a href="/categories"><h3>Categories</h3></a>
+          <ul>
+            
+              
+                <li><a href="/categories/#.NET core">.NET core</a></li>
+            
+              
+                <li><a href="/categories/#Computer vision">Computer vision</a></li>
+            
+              
+                <li><a href="/categories/#Go Programming">Go Programming</a></li>
+            
+              
+                <li><a href="/categories/#Programming Python">Programming Python</a></li>
+            
+              
+                <li><a href="/categories/#Tutorial">Tutorial</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="/about"><h3>About</h3></a></li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+      <h1 class="post-title entry-title">OpenCV 3, the Mat object</h1>
+      <p>In this post we will introduce the most used object of the new OpenCV3 library, using C++.</p>
+
+<p>The aim of the <strong>Mat</strong> object is to represent a matrix.
+It is composed by two parts: the header and the data.</p>
+
+<ul>
+  <li>The header contains information about the matrix itself (like the size of the matrix, the data type, number of channels etc…)</li>
+  <li>The data contains the pointer to the real matrix</li>
+</ul>
+
+<p>Each Mat object has its header, while the data can be shared between multiple instances. The data will be deallocated only when there are no Mat objects pointing to it.</p>
+
+<p>Mat is a very useful object: it is used in a lot of OpenCV functions and it also provides an automatic memory allocation and its release, so the programmers don’t need to do it manually.</p>
+
+<h2 id="library">Library</h2>
+
+<p>The Mat object and the functions we will see in this post are defined within the <strong>Core</strong> library.</p>
+
+<p>We can include it with the following preprocessor directive:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;opencv2\core\core.hpp&gt;
+</span></code></pre>
+</div>
+
+<p>Everything within this package is contained belogns to the <code class="highlighter-rouge">cv</code> namespace.</p>
+
+<p>You can choose to prepend the namespace <code class="highlighter-rouge">cv::</code> to each object and function of the core library you are using as follows</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span>
+<span class="c1">// or
+</span><span class="n">cv</span><span class="o">::</span><span class="n">imread</span><span class="p">(...)</span>
+</code></pre>
+</div>
+
+<p>You can also avoid prepending the namespace with the <code class="highlighter-rouge">using namespace</code> directive, as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">using</span> <span class="n">namespace</span> <span class="n">cv</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>We will choose the second way.</p>
+
+<h2 id="creating-the-mat-object">Creating the Mat object</h2>
+
+<h4 id="sharing-the-same-data">Sharing the same data</h4>
+
+<p>When using the assignment operator or the copy constructor, we get Mat instances having their own header, but sharing the same data.</p>
+
+<p>In the following example, objects A, B and C will point to the same data, so modifying one or more cells in matrix A, the same changes will result on matrices B and C.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span> <span class="o">=</span> <span class="p">...;</span>
+<span class="n">Mat</span> <span class="n">B</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+<span class="c1">// or
+</span><span class="n">Mat</span> <span class="n">C</span> <span class="o">=</span> <span class="n">A</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<h4 id="cloning-the-data">Cloning the data</h4>
+
+<p>To obtain two distinct matrices, so that modifying a value on the first will not affect the same value of the second, we can use the <code class="highlighter-rouge">clone()</code> or <code class="highlighter-rouge">copyTo()</code> operators.</p>
+
+<p>In this way the two matrices will have different headers and two distinct datas, which will have the same values at the moment of the clone operation.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span> <span class="o">=</span> <span class="p">...;</span>
+<span class="n">Mat</span> <span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">clone</span><span class="p">();</span>
+<span class="c1">// or
+</span><span class="n">Mat</span> <span class="n">C</span><span class="p">;</span>
+<span class="n">A</span><span class="p">.</span><span class="n">copyTo</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<h4 id="reading-an-image">Reading an image</h4>
+
+<p>To initialize a Mat object filling its values directly from an image saved into the memory, you can use the <strong>imread</strong> function, whose signature is</p>
+
+<p><strong>imread(String &amp; filename, int flags = IMREAD_COLOR)</strong></p>
+
+<p>which expects two parameters:</p>
+
+<ul>
+  <li>the name of the image file to load and file</li>
+  <li>the image mode (the default is IMREAD_COLOR), for example:</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">IMREAD_UNCHANGED</span>  <span class="n">If</span> <span class="n">set</span><span class="p">,</span> <span class="k">return</span> <span class="n">the</span> <span class="n">loaded</span> <span class="n">image</span> <span class="n">as</span> <span class="n">is</span> <span class="p">(</span><span class="n">with</span> <span class="n">alpha</span> <span class="n">channel</span><span class="p">,</span> <span class="n">otherwise</span> <span class="n">it</span> <span class="n">gets</span> <span class="n">cropped</span><span class="p">).</span>
+<span class="n">IMREAD_GRAYSCALE</span>  <span class="n">If</span> <span class="n">set</span><span class="p">,</span> <span class="n">always</span> <span class="n">convert</span> <span class="n">image</span> <span class="n">to</span> <span class="n">the</span> <span class="n">single</span> <span class="n">channel</span> <span class="n">grayscale</span> <span class="n">image</span><span class="p">.</span>
+<span class="n">IMREAD_COLOR</span>      <span class="n">If</span> <span class="n">set</span><span class="p">,</span> <span class="n">always</span> <span class="n">convert</span> <span class="n">image</span> <span class="n">to</span> <span class="n">the</span> <span class="mi">3</span> <span class="n">channel</span> <span class="n">BGR</span> <span class="n">color</span> <span class="n">image</span><span class="p">.</span>
+<span class="n">IMREAD_ANYDEPTH</span>   <span class="n">If</span> <span class="n">set</span><span class="p">,</span> <span class="k">return</span> <span class="mi">16</span><span class="o">-</span><span class="n">bit</span><span class="o">/</span><span class="mi">32</span><span class="o">-</span><span class="n">bit</span> <span class="n">image</span> <span class="n">when</span> <span class="n">the</span> <span class="n">input</span> <span class="n">has</span> <span class="n">the</span> <span class="n">corresponding</span> <span class="n">depth</span><span class="p">,</span> <span class="n">otherwise</span> <span class="n">convert</span> <span class="n">it</span> <span class="n">to</span> <span class="mi">8</span><span class="o">-</span><span class="n">bit</span><span class="p">.</span>
+<span class="n">IMREAD_ANYCOLOR</span>   <span class="n">If</span> <span class="n">set</span><span class="p">,</span> <span class="n">the</span> <span class="n">image</span> <span class="n">is</span> <span class="n">read</span> <span class="n">in</span> <span class="n">any</span> <span class="n">possible</span> <span class="n">color</span> <span class="n">format</span><span class="p">.</span>
+</code></pre>
+</div>
+
+<p>The function loads the image from the specified file, allocates the memory and returns the Mat object.</p>
+
+<p>If the image cannot be read, the function returns an empty matrix (Mat::data==NULL).</p>
+
+<h4 id="creating-a-new-mat-object">Creating a new Mat object</h4>
+
+<p>We can create a Mat object also specifying its size (the number of rows and columns), the number of channels per cell and its initial value.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cols</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="n">Scalar</span> <span class="o">&amp;</span> <span class="n">s</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>the <strong>type</strong> parameter is constructed according to the following convention:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">CV_</span><span class="p">[</span><span class="n">number</span> <span class="n">of</span> <span class="n">bits</span> <span class="n">per</span> <span class="n">value</span><span class="p">][</span><span class="n">value</span> <span class="n">Type</span><span class="p">]</span><span class="n">C</span><span class="p">[</span><span class="n">number</span> <span class="n">of</span> <span class="n">channels</span><span class="p">]</span>
+<span class="n">eg</span><span class="o">:</span>
+<span class="n">CV_8UC1</span>   <span class="o">-</span>  <span class="mi">8</span>  <span class="n">bit</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="n">Unsigned</span> <span class="kt">char</span><span class="p">,</span> <span class="mi">1</span> <span class="n">channel</span> <span class="n">per</span> <span class="n">cell</span>
+<span class="n">CV_8UC2</span>   <span class="o">-</span>  <span class="mi">8</span>  <span class="n">bit</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="n">Unsigned</span> <span class="kt">char</span><span class="p">,</span> <span class="mi">2</span> <span class="n">channels</span> <span class="n">per</span> <span class="n">cell</span>
+<span class="n">CV_8UC3</span>   <span class="o">-</span>  <span class="mi">8</span>  <span class="n">bit</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="n">Unsigned</span> <span class="kt">char</span><span class="p">,</span> <span class="mi">3</span> <span class="n">channels</span> <span class="n">per</span> <span class="n">cell</span>
+<span class="n">CV_8UC</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span>  <span class="mi">8</span>  <span class="n">bit</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="n">Unsigned</span> <span class="kt">char</span><span class="p">,</span> <span class="n">n</span> <span class="n">channels</span> <span class="n">per</span> <span class="n">cell</span>
+<span class="n">CV_64FC1</span>  <span class="o">-</span>  <span class="mi">64</span> <span class="n">bits</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="kt">float</span> <span class="p">,</span> <span class="mi">1</span> <span class="n">channel</span> <span class="n">per</span> <span class="n">cell</span>
+<span class="n">CV_64FC4</span>  <span class="o">-</span>  <span class="mi">64</span> <span class="n">bits</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="kt">float</span> <span class="p">,</span> <span class="mi">4</span> <span class="n">channels</span> <span class="n">per</span> <span class="n">cell</span>
+<span class="n">CV_64FC</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span>  <span class="mi">64</span> <span class="n">bits</span> <span class="n">per</span> <span class="n">channel</span><span class="p">,</span> <span class="kt">float</span> <span class="p">,</span> <span class="n">n</span> <span class="n">channels</span> <span class="n">per</span> <span class="n">cell</span>
+</code></pre>
+</div>
+
+<p>The <strong>Scalar</strong> type s is an optional <strong>4-element short vector</strong> value to initialize each matrix element with.</p>
+
+<p><em>The type Scalar is widely used in OpenCV to pass pixel values</em>.</p>
+
+<p>Let’s see some examples:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">M</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">CV_8UC3</span><span class="p">,</span> <span class="n">Scalar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">));</span> <span class="c1">// creates a 2x2 matrix, each value is an 8 bit unsigned short, 3 channels for each cell, initialized to 0, 0 and 255.
+</span>
+<span class="n">Mat</span> <span class="n">B</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">CV_8UC</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Scalar</span><span class="o">::</span><span class="n">all</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="c1">// creates a 3x3 matrix, each value is an 8 bit unsigned short, only 1 channel for each cell, initializing all cell values  to 0 value.
+</span></code></pre>
+</div>
+
+<h4 id="other-ways-to-create-the-mat-object">Other ways to create the Mat object</h4>
+
+<p>Three methods similar to the constructor seen above are <strong>Mat::zeros</strong> , <strong>Mat::ones</strong> and <strong>Mat::eye</strong>.</p>
+
+<p>You can use these 3 functions specifying the number of rows, of columns and the type of the cell.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">CV_8UC1</span><span class="p">);</span> <span class="c1">// sets all elements to 0
+</span><span class="n">Mat</span> <span class="n">B</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">CV_8UC1</span><span class="p">);</span> <span class="c1">// sets all elements to 1
+</span><span class="n">Mat</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">CV_8UC1</span><span class="p">);</span> <span class="c1">// sets all elements to 0, except the main diagonal to 1
+</span></code></pre>
+</div>
+
+<p>The last method to create (small) matrices is using the <strong>«</strong> operator:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">Mat_</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<h2 id="output">Output</h2>
+
+<p>The Mat object can be inserted into the <strong>«</strong> operators to print the matrix to a stream.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">Mat_</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">A</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<h2 id="save-the-matrix-in-an-image-file-on-the-disk">Save the matrix in an image file on the disk</h2>
+
+<p>To save a Mat object, creating an image file on the disk, use the <strong>imwrite</strong> function. Parametes are:</p>
+
+<ul>
+  <li>const String &amp; filename - the file name (including the path) where to save the image</li>
+  <li>InputArray img - the object containing the matrix to save</li>
+</ul>
+
+<p>Let’s check an example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">Mat_</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">imwrite</span><span class="p">(</span> <span class="s">"../../images/myIImage.jpg"</span><span class="p">,</span> <span class="n">A</span> <span class="p">);</span>
+</code></pre>
+</div>
+
+<h2 id="accessing-pixel-values">Accessing pixel values</h2>
+
+<p>To access to the intensity value of a pixel of the matrix, first you have to know the number of channels per pixel. In a simple grayscale image, there will be only 1 channel, while in a RGB color image there will be 3 channels per pixel.</p>
+
+<p>On a single channel, for example a Mat object of type <strong>8UC1</strong>, you can access the pixel value (0-255) in the following way:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Scalar</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<h5 id="note-to-maintain-the-usual-math-order-first-the-row-then-the-column-number-you-have-to-specify-the-y-parameter-before-the-x-parameter">Note: to maintain the usual math order (first the row, then the column number), you have to specify the <strong>y parameter before the x parameter</strong></h5>
+
+<p>It can be very tricky, so you can use the <strong>Point</strong> object to prevent sneaky errors:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Scalar</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>You can also use this notation to change the value of a pixel:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">matrix</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// setting the pixel (x,y) to 0
+</span></code></pre>
+</div>
+
+<p>On a 3-channel image, the way to access to each pixel and to the 3 values of each pixel (one per channel) is the following:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Vec3b</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">Vec3b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+<span class="n">uchar</span> <span class="n">blue</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">uchar</span> <span class="n">green</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">uchar</span> <span class="n">red</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</code></pre>
+</div>
+
+<h5 id="note-the-redgreenblue-order-is-the-inverse-of-what-you-can-expect">Note: the RedGreenBlue order is the inverse of what you can expect</h5>
+
+<p>Of course, if the matrix type is not equals to <strong>8UC1</strong> you have to change the type of the variables representing each channel. For example, with data type <strong>CV_64FC1</strong>, the variables’ type will be:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Vec3f</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">Vec3f</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+<span class="kt">float</span> <span class="n">blue</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kt">float</span> <span class="n">green</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="kt">float</span> <span class="n">red</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">.</span><span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</code></pre>
+</div>
+
+<h4 id="splitting-the-rgb-image">Splitting the RGB image</h4>
+
+<p>OpenCV provides the <code class="highlighter-rouge">split()</code> function to split the 3-channels RGB image into 3 Mat objects, one per channel.
+The parameters are the Mat object containing the source image and the vector of Mat objects, representing each RGB channel <strong>in reverse order, where the first is Blue, then Green and Red</strong>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="n">bgr_channels</span><span class="p">;</span>
+<span class="n">split</span><span class="p">(</span> <span class="n">image</span> <span class="p">,</span> <span class="n">bgr_channels</span> <span class="p">);</span>
+</code></pre>
+</div>
+
+<h2 id="visualizing-an-image">Visualizing an image</h2>
+
+<p>To visualize an image on the screen, especially to check the results of your algorithm, OpenCV includes some very useful method for creating (<strong>namedWindow</strong>) and visualizing (<strong>imshow</strong>) a 8UC image.</p>
+
+<p>Both methods will require, as the first parameter, a String containing the name of the window. Each window will be referenced by its name.</p>
+
+<p>Let’s look at an example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">Mat</span> <span class="n">matrix</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s">"../data/image.jpg"</span><span class="p">);</span>
+<span class="n">namedWindow</span><span class="p">(</span><span class="s">"windowName"</span><span class="p">,</span> <span class="n">WINDOW_AUTOSIZE</span><span class="p">);</span>
+<span class="n">imshow</span><span class="p">(</span><span class="s">"windowName"</span><span class="p">,</span> <span class="n">matrix</span><span class="p">);</span>
+<span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><strong>waitKey(timeout)</strong> is a function waiting until a timeout for a key stroke. When pressing the key, the focus must be in the “windowName” window, otherwise it’s discarded.</p>
+
+<h5 id="note-1-setting-the-timeout-to-0-the-function-will-wait-undefinitively-until-the-key-stroke">Note 1: setting the timeout to 0, the function will wait undefinitively until the key stroke</h5>
+
+<h5 id="note-2-putting-the-waitkey-function-inside-a-loop-it-will-create-a-transition-where-the-speed-depends-on-the-timeout-time-lower-timeout-higher-speed">Note 2: putting the waitKey function inside a loop, it will create a transition where the speed depends on the timeout time (lower timeout, higher speed)</h5>
+
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="/tags#OpenCV" title="Pages tagged OpenCV" class="tag"><span class="term">OpenCV</span></a><a href="/tags#C++" title="Pages tagged C++" class="tag"><span class="term">C++</span></a><a href="/tags#code" title="Pages tagged code" class="tag"><span class="term">code</span></a><a href="/tags#Computer Vision" title="Pages tagged Computer Vision" class="tag"><span class="term">Computer Vision</span></a></span>
+        <span>Updated on <span class="entry-date date updated"><time datetime="2016-04-20">April 20, 2016</time></span></span>
+        
+        <span class="author vcard"><span class="fn">Marco Mengoli</span></span>
+        <div class="social-share">
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=/computer%20vision/opencv-mat/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=/computer%20vision/opencv-mat/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=/computer%20vision/opencv-mat/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+  </ul>
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="http://www.marcomengoli.com/" class="read-more-btn">About the Author</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>Marco Mengoli</h3>
+    <div class="author-container">
+      <img class="author-img" src="/images/avatar.jpg" alt="Marco Mengoli" />
+      <div class="author-bio">Software Engineering student at University of Bologna. I love to solve problems and experiment new things. I'm an enthusiast maker, I love to make lots of projects with my Iot boards. I found on electronics a new really enjoyable hobby. My favourite thematic is Software Engineering, in particular the continuous improvement of the quality of the products I develop and also the way I do it. View more in the About page</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://www.facebook.com/MengoliMarco" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
+        
+          <li><a href="https://it.linkedin.com/in/marco-mengoli-165abaa4" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
+        
+          <li><a href="https://github.com/MarcoMengoli" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+          <li><a href="https://plus.google.com/112417882593672627749/posts" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
+        
+      </ul>
+      <!--
+      
+        <a aria-label="Follow @MarcoMengoli on GitHub" data-style="mega" href="https://github.com/MarcoMengoli" class="github-button">Follow @MarcoMengoli</a>
+      
+      <br>
+      -->
+    </div>
+  </div>
+</div>
+
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="/computer%20vision/opencv-intro/" class="read-more-btn">Read More</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="/.net%20core/EFCore_createSimpleModel_codeFirst/" title="Creating a simple model and generate the database with EF Core 1.0">Creating a simple model and generate the database with EF Core 1.0</a></h3>
+      <p>Creating a simple model and generate the database with EF Core 1.0 <a href="/.net%20core/EFCore_createSimpleModel_codeFirst/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="/.net%20core/setup_EFcore_vsproject/" title="Setting up the Entity Framework Core in a Visual Studio Project">Setting up the Entity Framework Core in a Visual Studio Project</a></h4>
+        <span>Published on November 23, 2016</span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="/computer%20vision/opencv-intro/" title="First steps with OpenCV">First steps with OpenCV</a></h4>
+        <span>Published on April 16, 2016</span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+  </article>
+</div><!-- /#main -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- start cookie law banner -->
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#edeff5",
+      "text": "#838391"
+    },
+    "button": {
+      "background": "#4b81e8"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right",
+  "content": {
+    "message": "This website uses cookies to ensure you get the best experience on our website. This is not a culinary website ;)"
+  }
+})});
+</script>
+<!-- end cookie law banner -->
+
+
+
+
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'mmblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2016 Marco Mengoli. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://github.com/aron-bordin/neo-hpstr-jekyll-theme" rel="nofollow">Neo-HPSTR Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

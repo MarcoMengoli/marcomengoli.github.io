@@ -1,0 +1,56 @@
+body {
+  font-size: 13px;
+}
+
+
+
+#go-down a {
+    font-size: 24px;
+}
+
+.jumbotron p {
+  font-size: 15px;
+}
+
+.social-icons li a{
+	font-size: 22px;
+}
+
+.social-icons li a:hover{
+	font-size: 22px;
+}
+
+/* TEXT */
+
+h2 {
+    font-size: 34px;
+    margin-bottom: 30px;
+}
+
+h3 {
+    font-size: 30px;
+    margin-bottom: 27px;
+}
+
+h4 {
+    font-size: 23px;
+    margin-bottom: 18px;
+}
+
+
+.image_div img {
+    width: 70%;
+    height: 70%;
+}
+
+.thumbnail img {
+    height: 200px;
+}
+
+.item h4 {
+    font-size: 19px;
+}
+
+footer .glyphicon {
+    font-size: 26px;
+}

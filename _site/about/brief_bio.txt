@@ -1,0 +1,8 @@
+Software Engineering student at University of Bologna.
+I love to solve problems, experiment new thingsand implement do-it-yourself projects.
+
+I'm an enthusiast maker: I really love to make lots of projects with my 4 Raspberry Pi boards (on Raspbian distro). I also use an Arduino Uno, a Sparkfun ESP8266 and a UDOO quad board. I found on electronics a new really enjoyable hobby.
+
+My favourite thematic is Software Engineering, in particular the continuous improvement of the quality of the products I develop and also the way I do it.
+
+I don't have a favorite language, because I strongly believe that each language has its own shot target. I mostly develop my software systems in C, C++, Java and Python. I have also used C#, Javascript, Visual Basic 6.0, Go and ASP for some academical projects and PHP, HTML & CSS when I produced web sites of some private companies or associations.

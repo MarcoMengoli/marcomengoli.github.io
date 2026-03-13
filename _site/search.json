@@ -1,0 +1,59 @@
+[
+  
+    {
+      "title"    : "Creating a simple model and generate the database with EF Core 1.0",
+      "category" : "",
+      "tags"     : ".NET core, Entity Framework Core, Visual Studio",
+      "url"      : "/.net%20core/EFCore_createSimpleModel_codeFirst/",
+      "date"     : "2016-11-24 00:00:00 +0100"
+    } ,
+  
+    {
+      "title"    : "Setting up the Entity Framework Core in a Visual Studio Project",
+      "category" : "",
+      "tags"     : ".NET core, Entity Framework Core, Visual Studio",
+      "url"      : "/.net%20core/setup_EFcore_vsproject/",
+      "date"     : "2016-11-23 00:00:00 +0100"
+    } ,
+  
+    {
+      "title"    : "OpenCV 3, the Mat object",
+      "category" : "",
+      "tags"     : "OpenCV, C++, code, Computer Vision",
+      "url"      : "/computer%20vision/opencv-mat/",
+      "date"     : "2016-04-20 00:00:00 +0200"
+    } ,
+  
+    {
+      "title"    : "First steps with OpenCV",
+      "category" : "",
+      "tags"     : "OpenCV, C++, code, Computer Vision",
+      "url"      : "/computer%20vision/opencv-intro/",
+      "date"     : "2016-04-16 00:00:00 +0200"
+    } ,
+  
+    {
+      "title"    : "Python, working with Excel spreadsheets.",
+      "category" : "",
+      "tags"     : "Python, Excel",
+      "url"      : "/programming%20python/python-excel/",
+      "date"     : "2016-01-26 00:00:00 +0100"
+    } ,
+  
+    {
+      "title"    : "Go channels",
+      "category" : "",
+      "tags"     : "Go, message-passing",
+      "url"      : "/go%20programming/go-channel/",
+      "date"     : "2016-01-10 00:00:00 +0100"
+    } ,
+  
+    {
+      "title"    : "Git command line basics",
+      "category" : "",
+      "tags"     : "Git, code",
+      "url"      : "/tutorial/GitBeginnerTutorial/",
+      "date"     : "2015-11-15 00:00:00 +0100"
+    } 
+  
+]
